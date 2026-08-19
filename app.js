@@ -1,11 +1,10 @@
 /* =====================================================
    پست‌های سایت
-   فعلاً خالی است؛ بعداً پست‌های جدید را اینجا اضافه می‌کنیم.
 ===================================================== */
 
 const posts = [
     /*
-    نمونه‌ی اضافه‌کردن پست:
+    نمونه پست:
 
     {
         id: 1,
@@ -14,7 +13,7 @@ const posts = [
         category: "cinema",
         date: "۲۹ مرداد ۱۴۰۵",
         description: "توضیح کوتاه پست",
-        content: "متن کامل پست اینجا نوشته می‌شود."
+        content: "متن کامل پست"
     }
     */
 ];
@@ -136,7 +135,7 @@ const sectionSettings = {
 
 
 /* =====================================================
-   عناصر صفحه
+   عناصر اصلی صفحه
 ===================================================== */
 
 const landing = document.getElementById("landing");
@@ -147,20 +146,32 @@ const toast = document.getElementById("toast");
 
 
 /* =====================================================
-   نمایش صفحه‌ی اصلی بعد از کلیک
+   نمایش سایت بعد از کلیک روی «بزن بریم»
 ===================================================== */
 
-goBtn.addEventListener("click", function () {
-    landing.classList.add("hidden");
+if (goBtn) {
+    goBtn.addEventListener("click", function () {
+        if (landing) {
+            landing.classList.add("hidden");
+        }
 
-    setTimeout(function () {
-        landing.style.display = "none";
-        siteContent.classList.add("visible");
-        bottomNav.classList.add("show");
+        setTimeout(function () {
+            if (landing) {
+                landing.style.display = "none";
+            }
 
-        showPage("homePage");
-    }, 600);
-});
+            if (siteContent) {
+                siteContent.classList.add("visible");
+            }
+
+            if (bottomNav) {
+                bottomNav.classList.add("show");
+            }
+
+            showPage("homePage");
+        }, 600);
+    });
+}
 
 
 /* =====================================================
@@ -172,9 +183,11 @@ function createPostCard(post) {
     card.className = "card";
 
     card.innerHTML = `
-        <h3>${post.title}</h3>
+        <h3>${post.title || "بدون عنوان"}</h3>
 
-        <p>${post.description || "توضیحی برای این پست ثبت نشده است."}</p>
+        <p>
+            ${post.description || "توضیحی برای این پست ثبت نشده است."}
+        </p>
 
         <div class="card-meta">
             <span>🗓 ${post.date || "بدون تاریخ"}</span>
@@ -186,35 +199,45 @@ function createPostCard(post) {
         </span>
     `;
 
-    card.querySelector(".open-post").addEventListener("click", function () {
-        openPost(post.id);
-    });
+    const openButton = card.querySelector(".open-post");
+
+    if (openButton) {
+        openButton.addEventListener("click", function () {
+            openPost(post.id);
+        });
+    }
 
     return card;
 }
 
 
 /* =====================================================
-   نمایش پست‌های خانه
-   فقط پست‌های جدید در این قسمت می‌آیند.
+   نمایش پست‌های تازه در خانه
 ===================================================== */
 
 function renderLatestPosts() {
     const container = document.getElementById("latestPosts");
 
+    if (!container) {
+        return;
+    }
+
     container.innerHTML = "";
 
     const latestPosts = [...posts]
-        .sort((a, b) => Number(b.id) - Number(a.id))
+        .sort(function (a, b) {
+            return Number(b.id) - Number(a.id);
+        })
         .slice(0, 10);
 
     if (latestPosts.length === 0) {
         container.innerHTML = `
             <div class="empty-message">
                 هنوز پست جدیدی منتشر نشده است.<br>
-                به‌زودی مطالب جذاب پیکان خان اینجا قرار می‌گیرند 🚀
+                به‌زودی مطالب جذاب پیکان‌خان اینجا قرار می‌گیرند 🚀
             </div>
         `;
+
         return;
     }
 
@@ -230,14 +253,22 @@ function renderLatestPosts() {
 
 function renderCategories() {
     Object.values(sectionSettings).forEach(function (settings) {
-        const container = document.getElementById(settings.categoryContainer);
+        const container = document.getElementById(
+            settings.categoryContainer
+        );
+
         const categoryList = categories[settings.categoryKey];
+
+        if (!container || !categoryList) {
+            return;
+        }
 
         container.innerHTML = "";
 
         categoryList.forEach(function (category) {
             const button = document.createElement("button");
             button.className = "category-card";
+            button.type = "button";
 
             button.innerHTML = `
                 <span class="category-icon">${category.icon}</span>
@@ -266,15 +297,28 @@ function renderCategories() {
 
 
 /* =====================================================
-   نمایش پست‌های مربوط به یک دسته
+   نمایش پست‌های یک دسته
 ===================================================== */
 
-function renderCategoryPosts(type, categoryId, containerId, categoryTitle) {
+function renderCategoryPosts(
+    type,
+    categoryId,
+    containerId,
+    categoryTitle
+) {
     const container = document.getElementById(containerId);
+
+    if (!container) {
+        return;
+    }
+
     container.innerHTML = "";
 
     const filteredPosts = posts.filter(function (post) {
-        return post.type === type && post.category === categoryId;
+        return (
+            post.type === type &&
+            post.category === categoryId
+        );
     });
 
     if (filteredPosts.length === 0) {
@@ -283,6 +327,7 @@ function renderCategoryPosts(type, categoryId, containerId, categoryTitle) {
                 در دسته‌ی «${categoryTitle}» هنوز پستی قرار نگرفته است.
             </div>
         `;
+
         return;
     }
 
@@ -293,49 +338,56 @@ function renderCategoryPosts(type, categoryId, containerId, categoryTitle) {
 
 
 /* =====================================================
-   آماده‌سازی نام دسته برای کارت پست
+   آماده‌سازی نام دسته‌بندی پست‌ها
 ===================================================== */
 
 function preparePosts() {
-    posts.forEach(function (post) {
-        const allCategories = [
-            ...categories.movies,
-            ...categories.books,
-            ...categories.mods,
-            ...categories.articles
-        ];
+    const allCategories = [
+        ...categories.movies,
+        ...categories.books,
+        ...categories.mods,
+        ...categories.articles
+    ];
 
+    posts.forEach(function (post) {
         const category = allCategories.find(function (item) {
             return item.id === post.category;
         });
 
-        post.categoryName = category ? category.title : "بدون دسته‌بندی";
+        post.categoryName = category
+            ? category.title
+            : "بدون دسته‌بندی";
     });
 }
 
 
 /* =====================================================
-   نمایش صفحه
+   تغییر صفحه
 ===================================================== */
 
 function showPage(pageId) {
-    document.querySelectorAll(".page-section").forEach(function (page) {
+    const allPages = document.querySelectorAll(".page-section");
+
+    allPages.forEach(function (page) {
         page.classList.remove("active-page");
     });
 
     const selectedPage = document.getElementById(pageId);
 
-    if (selectedPage) {
-        selectedPage.classList.add("active-page");
+    if (!selectedPage) {
+        console.error("صفحه پیدا نشد:", pageId);
+        showToast("صفحه موردنظر پیدا نشد.");
+        return;
     }
 
-    document.querySelectorAll(".nav-item").forEach(function (item) {
-    item.classList.toggle(
-        "active",
-        item.dataset.page === pageId
-    );
-});
+    selectedPage.classList.add("active-page");
 
+    document.querySelectorAll(".nav-item").forEach(function (item) {
+        item.classList.toggle(
+            "active",
+            item.dataset.page === pageId
+        );
+    });
 
     window.scrollTo({
         top: 0,
@@ -345,24 +397,39 @@ function showPage(pageId) {
 
 
 /* =====================================================
-   کلیک روی منوی پایین
+   منوی پایین
 ===================================================== */
 
 document.querySelectorAll(".nav-item").forEach(function (item) {
     item.addEventListener("click", function () {
-        showPage(item.dataset.page);
+        const pageId = item.getAttribute("data-page");
+
+        if (pageId) {
+            showPage(pageId);
+        }
     });
 });
+
 
 /* =====================================================
    لینک‌های فوتر
+   شامل «درباره ما» و «تماس با ما»
 ===================================================== */
 
-document.querySelectorAll(".footer-link").forEach(function (link) {
-    link.addEventListener("click", function () {
-        showPage(link.dataset.page);
-    });
+document.addEventListener("click", function (event) {
+    const footerLink = event.target.closest(".footer-link");
+
+    if (!footerLink) {
+        return;
+    }
+
+    const pageId = footerLink.getAttribute("data-page");
+
+    if (pageId) {
+        showPage(pageId);
+    }
 });
+
 
 /* =====================================================
    دکمه‌های بازگشت
@@ -370,13 +437,17 @@ document.querySelectorAll(".footer-link").forEach(function (link) {
 
 document.querySelectorAll(".back-btn").forEach(function (button) {
     button.addEventListener("click", function () {
-        showPage(button.dataset.page);
+        const pageId = button.getAttribute("data-page");
+
+        if (pageId) {
+            showPage(pageId);
+        }
     });
 });
 
 
 /* =====================================================
-   بازکردن صفحه‌ی اختصاصی پست
+   بازکردن پست
 ===================================================== */
 
 function openPost(postId) {
@@ -391,8 +462,12 @@ function openPost(postId) {
 
     const container = document.getElementById("singlePost");
 
+    if (!container) {
+        return;
+    }
+
     container.innerHTML = `
-        <h1>${post.title}</h1>
+        <h1>${post.title || "بدون عنوان"}</h1>
 
         <span class="post-date">
             🗓 ${post.date || "بدون تاریخ"} |
@@ -400,7 +475,7 @@ function openPost(postId) {
         </span>
 
         <div class="post-content">
-            ${post.content || post.description || "محتوایی برای این پست ثبت نشده است."}
+            ${post.content || post.description || "محتوایی ثبت نشده است."}
         </div>
     `;
 
@@ -417,46 +492,62 @@ function searchPosts() {
     const message = document.getElementById("searchMessage");
     const results = document.getElementById("searchResults");
 
+    if (!input || !message || !results) {
+        return;
+    }
+
     const query = input.value.trim().toLowerCase();
 
     results.innerHTML = "";
 
     if (!query) {
-        message.textContent = "نام چیزی را که می‌خواهی جست‌وجو کنی بنویس.";
+        message.textContent =
+            "نام چیزی را که می‌خواهی جست‌وجو کنی بنویس.";
         return;
     }
 
     const foundPosts = posts.filter(function (post) {
         const searchableText = `
-            ${post.title}
-            ${post.description}
-            ${post.content}
-            ${post.category}
-            ${post.categoryName}
+            ${post.title || ""}
+            ${post.description || ""}
+            ${post.content || ""}
+            ${post.category || ""}
+            ${post.categoryName || ""}
         `.toLowerCase();
 
         return searchableText.includes(query);
     });
 
     if (foundPosts.length === 0) {
-        message.textContent = `برای «${input.value}» پستی پیدا نشد.`;
+        message.textContent =
+            `برای «${input.value}» پستی پیدا نشد.`;
+
         return;
     }
 
-    message.textContent = `${foundPosts.length} نتیجه برای «${input.value}» پیدا شد.`;
+    message.textContent =
+        `${foundPosts.length} نتیجه برای «${input.value}» پیدا شد.`;
 
     foundPosts.forEach(function (post) {
         results.appendChild(createPostCard(post));
     });
 }
 
-document.getElementById("searchBtn").addEventListener("click", searchPosts);
 
-document.getElementById("searchInput").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        searchPosts();
-    }
-});
+const searchButton = document.getElementById("searchBtn");
+const searchInput = document.getElementById("searchInput");
+
+if (searchButton) {
+    searchButton.addEventListener("click", searchPosts);
+}
+
+if (searchInput) {
+    searchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            searchPosts();
+        }
+    });
+}
 
 
 /* =====================================================
@@ -464,6 +555,10 @@ document.getElementById("searchInput").addEventListener("keydown", function (eve
 ===================================================== */
 
 function showToast(message) {
+    if (!toast) {
+        return;
+    }
+
     toast.textContent = message;
     toast.classList.add("show");
 
