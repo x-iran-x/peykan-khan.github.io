@@ -330,11 +330,12 @@ function showPage(pageId) {
     }
 
     document.querySelectorAll(".nav-item").forEach(function (item) {
-        item.classList.toggle(
-            "active",
-            item.dataset.page === pageId
-        );
-    });
+    item.classList.toggle(
+        "active",
+        item.dataset.page === pageId
+    );
+});
+
 
     window.scrollTo({
         top: 0,
@@ -353,6 +354,15 @@ document.querySelectorAll(".nav-item").forEach(function (item) {
     });
 });
 
+/* =====================================================
+   لینک‌های فوتر
+===================================================== */
+
+document.querySelectorAll(".footer-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+        showPage(link.dataset.page);
+    });
+});
 
 /* =====================================================
    دکمه‌های بازگشت
