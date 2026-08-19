@@ -5,40 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peykan Khan | پیکان خان</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --primary-color: #ffcc00; 
-            --bg-color: #121212;      
-            --text-color: #ffffff;
+            --primary: #ffcc00;
+            --bg: #121212;
+            --text: #ffffff;
             --card-bg: #1e1e1e;
+            --nav-bg: #1a1a1a;
+            --muted: #9a9a9a;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ============ صفحه خوش‌آمد (لندینگ) ============ */
+        .landing {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, #1f1f1f, var(--bg) 70%);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 25px;
+            z-index: 2000;
+            transition: opacity 0.6s ease;
         }
 
-        .header-container {
-            text-align: center;
-            padding: 60px 20px;
-            width: 100%;
-            background: linear-gradient(180deg, #1a1a1a 0%, var(--bg-color) 100%);
+        .landing.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .logo-wrapper {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            border: 4px solid var(--primary-color);
+            border: 4px solid var(--primary);
             overflow: hidden;
-            box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
-            background-color: #333;
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.35);
+            background: #333;
         }
 
         .logo-wrapper img {
@@ -48,71 +63,206 @@
             display: block;
         }
 
-        h1 {
-            font-size: 2.8rem;
-            margin: 10px 0;
-            color: var(--primary-color);
+        .landing h1 {
+            font-size: 2.4rem;
+            color: var(--primary);
             letter-spacing: 1px;
         }
 
-        /* بخش محتوا - بسیار مینیمال */
-        .main-content {
-            max-width: 700px;
-            width: 90%;
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-bottom: 50px;
+        .go-btn {
+            background: var(--primary);
+            color: #121212;
+            border: none;
+            padding: 14px 45px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
         }
 
-        .card {
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
+        .go-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.5);
+        }
+
+        .go-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ============ نمای خانه ============ */
+        .home-view {
+            display: none;
+            padding: 25px 15px 100px; /* فاصله پایین برای نوار منو */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .home-view.visible {
+            display: block;
+        }
+
+        .home-header {
             text-align: center;
-            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .home-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .home-header p {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        /* کارت پست‌ها */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-right: 4px solid var(--primary);
+            transition: transform 0.2s;
         }
 
         .card:hover {
-            border: 1px solid var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 6px;
         }
 
         .card p {
-            margin: 0;
-            font-size: 1.1rem;
-            color: #ccc;
-            line-height: 1.8;
+            color: #bbb;
+            font-size: 0.9rem;
+            line-height: 1.7;
         }
 
-        footer {
-            margin-top: auto;
-            padding: 30px;
-            font-size: 0.8rem;
-            color: #444;
+        .card .date {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--muted);
         }
 
+        /* ============ نوار منوی پایین ============ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            border-top: 1px solid #2a2a2a;
+            display: none;
+            justify-content: space-around;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            z-index: 1500;
+        }
+
+        .bottom-nav.show {
+            display: flex;
+        }
+
+        .bottom-nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            transition: color 0.3s;
+        }
+
+        .bottom-nav a .icon {
+            font-size: 1.3rem;
+        }
+
+        .bottom-nav a.active,
+        .bottom-nav a:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .bottom-nav a { font-size: 0.62rem; }
+            .bottom-nav a .icon { font-size: 1.15rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header class="header-container">
+    <!-- صفحه خوش‌آمد: کاربر اول این رو می‌بینه -->
+    <div class="landing" id="landing">
         <div class="logo-wrapper">
             <img src="https://www.upload.ee/image/19665651/logo.jpg" alt="Peykan Khan Logo">
         </div>
         <h1>پیکان خان</h1>
-    </header>
+        <button class="go-btn" onclick="goHome()">بزن بریم 🚀</button>
+    </div>
 
-    <main class="main-content">
-        <!-- اگر متن خاصی مد نظرت هست، همینجا جایگزین کن -->
-        <section class="card">
-            <p>خوش آمدید به وب‌سایت رسمی پیکان خان</p>
-        </section>
+    <!-- بخش خانه: پست‌های تازه اینجا دیده می‌شن -->
+    <main class="home-view" id="homeView">
+        <header class="home-header">
+            <h2>📢 پست‌های تازه</h2>
+            <p>جدیدترین مطالب پیکان خان</p>
+        </header>
+
+        <!-- برای هر پست جدید، یک کارت مثل این اضافه کن -->
+        <article class="card">
+            <h3>اولین پست ما</h3>
+            <p>توضیح کوتاه پست اینجا نوشته می‌شه. همین‌جا می‌تونی متن دلخواهت رو بذاری.</p>
+            <span class="date">🗓 ۲۸ مرداد ۱۴۰۵</span>
+        </article>
+
+        <article class="card">
+            <h3>پست دوم</h3>
+            <p>توضیح کوتاه پست دوم اینجا میاد.</p>
+            <span class="date">🗓 ۲۷ مرداد ۱۴۰۵</span>
+        </article>
+
+        <article class="card">
+            <h3>پست سوم</h3>
+            <p>توضیح کوتاه پست سوم اینجا میاد.</p>
+            <span class="date">🗓 ۲۶ مرداد ۱۴۰۵</span>
+        </article>
     </main>
 
-    <footer>
-        &copy; 2026 Peykan Khan
-    </footer>
+    <!-- نوار منوی پایین (فقط بعد از کلیک روی «بزن بریم» ظاهر می‌شه) -->
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="#" class="active"><span class="icon">🏠</span>خانه</a>
+        <a href="#"><span class="icon">📰</span>مقاله‌ها</a>
+        <a href="#"><span class="icon">🎮</span>مودها</a>
+        <a href="#"><span class="icon">📚</span>کتاب‌ها</a>
+        <a href="#"><span class="icon">🎬</span>فیلم‌ها</a>
+        <a href="#"><span class="icon">🔍</span>جستجو</a>
+    </nav>
+
+    <script>
+        function goHome() {
+            const landing = document.getElementById('landing');
+            const home = document.getElementById('homeView');
+            const nav = document.getElementById('bottomNav');
+
+            landing.classList.add('hidden');
+
+            setTimeout(function () {
+                landing.style.display = 'none';
+                home.classList.add('visible');
+                nav.classList.add('show');
+                window.scrollTo(0, 0);
+            }, 600);
+        }
+    </script>
 
 </body>
-</html>
+    </html>
+            
