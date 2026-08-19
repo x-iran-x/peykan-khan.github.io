@@ -143,33 +143,75 @@ const siteContent = document.getElementById("siteContent");
 const bottomNav = document.getElementById("bottomNav");
 const goBtn = document.getElementById("goBtn");
 const toast = document.getElementById("toast");
+const skipLandingCheckbox =
+    document.getElementById("skipLanding");
 
 
 /* =====================================================
-   نمایش سایت بعد از کلیک روی «بزن بریم»
+   صفحه خوش‌آمدگویی و ورود به سایت
 ===================================================== */
+
+const skipLanding =
+    localStorage.getItem("peykanKhanSkipLanding") === "true";
+
+
+function enterSite() {
+    if (landing) {
+        landing.classList.add("hidden");
+    }
+
+    setTimeout(function () {
+        if (landing) {
+            landing.style.display = "none";
+        }
+
+        if (siteContent) {
+            siteContent.classList.add("visible");
+        }
+
+        if (bottomNav) {
+            bottomNav.classList.add("show");
+        }
+
+        showPage("homePage");
+    }, 600);
+}
+
+
+/* ورود مستقیم اگر کاربر قبلاً انتخاب کرده باشد */
+
+if (skipLanding) {
+    if (landing) {
+        landing.style.display = "none";
+    }
+
+    if (siteContent) {
+        siteContent.classList.add("visible");
+    }
+
+    if (bottomNav) {
+        bottomNav.classList.add("show");
+    }
+
+    showPage("homePage");
+}
+
+
+/* ورود با دکمه */
 
 if (goBtn) {
     goBtn.addEventListener("click", function () {
-        if (landing) {
-            landing.classList.add("hidden");
+        if (
+            skipLandingCheckbox &&
+            skipLandingCheckbox.checked
+        ) {
+            localStorage.setItem(
+                "peykanKhanSkipLanding",
+                "true"
+            );
         }
 
-        setTimeout(function () {
-            if (landing) {
-                landing.style.display = "none";
-            }
-
-            if (siteContent) {
-                siteContent.classList.add("visible");
-            }
-
-            if (bottomNav) {
-                bottomNav.classList.add("show");
-            }
-
-            showPage("homePage");
-        }, 600);
+        enterSite();
     });
 }
 
