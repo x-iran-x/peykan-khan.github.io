@@ -3,266 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Peykan Khan | پیکان خان</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        :root {
-            --primary: #ffcc00;
-            --bg: #121212;
-            --text: #ffffff;
-            --card-bg: #1e1e1e;
-            --nav-bg: #1a1a1a;
-            --muted: #9a9a9a;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        /* ============ صفحه خوش‌آمد (لندینگ) ============ */
-        .landing {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 30%, #1f1f1f, var(--bg) 70%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            z-index: 2000;
-            transition: opacity 0.6s ease;
-        }
-
-        .landing.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .logo-wrapper {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 4px solid var(--primary);
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 204, 0, 0.35);
-            background: #333;
-        }
-
-        .logo-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .landing h1 {
-            font-size: 2.4rem;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-
-        .go-btn {
-            background: var(--primary);
-            color: #121212;
-            border: none;
-            padding: 14px 45px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
-        }
-
-        .go-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.5);
-        }
-
-        .go-btn:active {
-            transform: scale(0.97);
-        }
-
-        /* ============ نمای خانه ============ */
-        .home-view {
-            display: none;
-            padding: 25px 15px 100px; /* فاصله پایین برای نوار منو */
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .home-view.visible {
-            display: block;
-        }
-
-        .home-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .home-header h2 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .home-header p {
-            color: var(--muted);
-            font-size: 0.85rem;
-        }
-
-        /* کارت پست‌ها */
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-right: 4px solid var(--primary);
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-        }
-
-        .card h3 {
-            font-size: 1.1rem;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .card p {
-            color: #bbb;
-            font-size: 0.9rem;
-            line-height: 1.7;
-        }
-
-        .card .date {
-            display: inline-block;
-            margin-top: 8px;
-            font-size: 0.75rem;
-            color: var(--muted);
-        }
-
-        /* ============ نوار منوی پایین ============ */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--nav-bg);
-            border-top: 1px solid #2a2a2a;
-            display: none;
-            justify-content: space-around;
-            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-            z-index: 1500;
-        }
-
-        .bottom-nav.show {
-            display: flex;
-        }
-
-        .bottom-nav a {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.7rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            padding: 4px 8px;
-            border-radius: 10px;
-            transition: color 0.3s;
-        }
-
-        .bottom-nav a .icon {
-            font-size: 1.3rem;
-        }
-
-        .bottom-nav a.active,
-        .bottom-nav a:hover {
-            color: var(--primary);
-        }
-
-        @media (max-width: 480px) {
-            .bottom-nav a { font-size: 0.62rem; }
-            .bottom-nav a .icon { font-size: 1.15rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- صفحه خوش‌آمد: کاربر اول این رو می‌بینه -->
+    <!-- صفحه‌ی خوش‌آمدگویی -->
     <div class="landing" id="landing">
+
         <div class="logo-wrapper">
-            <img src="https://www.upload.ee/image/19665651/logo.jpg" alt="Peykan Khan Logo">
+            <img
+                src="https://www.upload.ee/image/19665651/logo.jpg"
+                alt="لوگوی پیکان خان"
+            >
         </div>
+
         <h1>پیکان خان</h1>
-        <button class="go-btn" onclick="goHome()">بزن بریم 🚀</button>
+
+        <button class="go-btn" id="goBtn">
+            بزن بریم 🚀
+        </button>
+
     </div>
 
-    <!-- بخش خانه: پست‌های تازه اینجا دیده می‌شن -->
-    <main class="home-view" id="homeView">
-        <header class="home-header">
-            <h2>📢 پست‌های تازه</h2>
-            <p>جدیدترین مطالب پیکان خان</p>
-        </header>
+    <!-- محتوای اصلی سایت -->
+    <main class="site-content" id="siteContent">
 
-        <!-- برای هر پست جدید، یک کارت مثل این اضافه کن -->
-        <article class="card">
-            <h3>اولین پست ما</h3>
-            <p>توضیح کوتاه پست اینجا نوشته می‌شه. همین‌جا می‌تونی متن دلخواهت رو بذاری.</p>
-            <span class="date">🗓 ۲۸ مرداد ۱۴۰۵</span>
-        </article>
+        <!-- صفحه‌ی خانه -->
+        <section class="page-section active-page" id="homePage">
 
-        <article class="card">
-            <h3>پست دوم</h3>
-            <p>توضیح کوتاه پست دوم اینجا میاد.</p>
-            <span class="date">🗓 ۲۷ مرداد ۱۴۰۵</span>
-        </article>
+            <header class="home-header">
+                <h2>📢 پست‌های تازه</h2>
+                <p>جدیدترین مطالب پیکان خان</p>
+            </header>
 
-        <article class="card">
-            <h3>پست سوم</h3>
-            <p>توضیح کوتاه پست سوم اینجا میاد.</p>
-            <span class="date">🗓 ۲۶ مرداد ۱۴۰۵</span>
-        </article>
+            <div id="latestPosts" class="posts-list"></div>
+
+        </section>
+
+        <!-- صفحه‌ی مقاله‌ها -->
+        <section class="page-section" id="articlesPage">
+
+            <div class="section-header">
+                <button class="back-btn" data-page="homePage">← بازگشت</button>
+                <h2>📰 مقاله‌ها</h2>
+            </div>
+
+            <div id="articleCategories" class="categories-grid"></div>
+            <div id="articlePosts" class="posts-list"></div>
+
+        </section>
+
+        <!-- صفحه‌ی مودها -->
+        <section class="page-section" id="modsPage">
+
+            <div class="section-header">
+                <button class="back-btn" data-page="homePage">← بازگشت</button>
+                <h2>🎮 مودها</h2>
+            </div>
+
+            <div id="modCategories" class="categories-grid"></div>
+            <div id="modPosts" class="posts-list"></div>
+
+        </section>
+
+        <!-- صفحه‌ی کتاب‌ها -->
+        <section class="page-section" id="booksPage">
+
+            <div class="section-header">
+                <button class="back-btn" data-page="homePage">← بازگشت</button>
+                <h2>📚 کتاب‌ها</h2>
+            </div>
+
+            <div id="bookCategories" class="categories-grid"></div>
+            <div id="bookPosts" class="posts-list"></div>
+
+        </section>
+
+        <!-- صفحه‌ی فیلم‌ها -->
+        <section class="page-section" id="moviesPage">
+
+            <div class="section-header">
+                <button class="back-btn" data-page="homePage">← بازگشت</button>
+                <h2>🎬 فیلم‌ها</h2>
+            </div>
+
+            <div id="movieCategories" class="categories-grid"></div>
+            <div id="moviePosts" class="posts-list"></div>
+
+        </section>
+
+        <!-- صفحه‌ی جست‌وجو -->
+        <section class="page-section" id="searchPage">
+
+            <div class="section-header">
+                <button class="back-btn" data-page="homePage">← بازگشت</button>
+                <h2>🔍 جست‌وجو</h2>
+            </div>
+
+            <div class="search-box">
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="نام فیلم، کتاب، مود یا مقاله را بنویس..."
+                >
+
+                <button id="searchBtn">
+                    جست‌وجو
+                </button>
+            </div>
+
+            <p id="searchMessage" class="search-message"></p>
+
+            <div id="searchResults" class="posts-list"></div>
+
+        </section>
+
+        <!-- صفحه‌ی اختصاصی هر پست -->
+        <section class="page-section" id="postPage">
+
+            <div class="section-header">
+                <button class="back-btn" data-page="homePage">← بازگشت</button>
+                <h2>📄 مشاهده‌ی پست</h2>
+            </div>
+
+            <article id="singlePost" class="single-post"></article>
+
+        </section>
+
     </main>
 
-    <!-- نوار منوی پایین (فقط بعد از کلیک روی «بزن بریم» ظاهر می‌شه) -->
+    <!-- نوار منوی پایین -->
     <nav class="bottom-nav" id="bottomNav">
-        <a href="#" class="active"><span class="icon">🏠</span>خانه</a>
-        <a href="#"><span class="icon">📰</span>مقاله‌ها</a>
-        <a href="#"><span class="icon">🎮</span>مودها</a>
-        <a href="#"><span class="icon">📚</span>کتاب‌ها</a>
-        <a href="#"><span class="icon">🎬</span>فیلم‌ها</a>
-        <a href="#"><span class="icon">🔍</span>جستجو</a>
+
+        <button class="nav-item active" data-page="homePage">
+            <span>🏠</span>
+            <small>خانه</small>
+        </button>
+
+        <button class="nav-item" data-page="articlesPage">
+            <span>📰</span>
+            <small>مقاله‌ها</small>
+        </button>
+
+        <button class="nav-item" data-page="modsPage">
+            <span>🎮</span>
+            <small>مودها</small>
+        </button>
+
+        <button class="nav-item" data-page="booksPage">
+            <span>📚</span>
+            <small>کتاب‌ها</small>
+        </button>
+
+        <button class="nav-item" data-page="moviesPage">
+            <span>🎬</span>
+            <small>فیلم‌ها</small>
+        </button>
+
+        <button class="nav-item" data-page="searchPage">
+            <span>🔍</span>
+            <small>جست‌وجو</small>
+        </button>
+
     </nav>
 
-    <script>
-        function goHome() {
-            const landing = document.getElementById('landing');
-            const home = document.getElementById('homeView');
-            const nav = document.getElementById('bottomNav');
+    <!-- اعلان در دست ساخت -->
+    <div class="toast" id="toast"></div>
 
-            landing.classList.add('hidden');
-
-            setTimeout(function () {
-                landing.style.display = 'none';
-                home.classList.add('visible');
-                nav.classList.add('show');
-                window.scrollTo(0, 0);
-            }, 600);
-        }
-    </script>
+    <script src="app.js"></script>
 
 </body>
-    </html>
-            
+</html>
