@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پیکان‌خان | Peykan Khan</title>
+    <title>Peykan Khan | پیکان خان</title>
     <style>
-        /* استایل پایه و تم تاریک */
+        :root {
+            --primary-color: #ffcc00; 
+            --bg-color: #121212;      
+            --text-color: #ffffff;
+            --card-bg: #1e1e1e;
+        }
+
         body {
-            background-color: #0f0f0f; /* مشکی خیلی تیره */
-            color: #e0e0e0; /* خاکستری روشن برای متن */
-            font-family: 'Tahoma', 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,87 +23,96 @@
             align-items: center;
         }
 
-        /* هدر یا سربرگ سایت */
-        header {
-            width: 100%;
-            padding: 40px 0;
+        .header-container {
             text-align: center;
-            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-bottom: 2px solid #333;
+            padding: 60px 20px;
+            width: 100%;
+            background: linear-gradient(180deg, #1a1a1a 0%, var(--bg-color) 100%);
+        }
+
+        .logo-wrapper {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+            background-color: #333;
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         h1 {
-            font-size: 3rem;
-            margin: 0;
-            color: #bb86fc; /* بنفش نئونی خفن */
-            text-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
+            font-size: 2.8rem;
+            margin: 10px 0;
+            color: var(--primary-color);
+            letter-spacing: 1px;
         }
 
-        /* کانتینر اصلی برای محتوا */
-        .container {
-            max-width: 800px;
+        /* بخش محتوا - بسیار مینیمال */
+        .main-content {
+            max-width: 700px;
             width: 90%;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        /* استایل جای لوگو (فعلاً یک دایره شیک می‌ذاریم) */
-        .logo-placeholder {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: #222;
-            border: 3px solid #bb86fc;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: #666;
-            box-shadow: 0 0 20px rgba(187, 134, 252, 0.2);
-        }
-
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #b0b0b0;
-        }
-
-        /* دکمه یا لینک‌های خفن */
-        .btn {
-            display: inline-block;
             margin-top: 20px;
-            padding: 12px 30px;
-            background-color: #bb86fc;
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-bottom: 50px;
         }
 
-        .btn:hover {
-            background-color: #03dac6; /* تغییر رنگ به سبز نئونی هنگام هاور */
-            transform: scale(1.05);
+        .card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border: 1px solid var(--primary-color);
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px;
+            font-size: 0.8rem;
+            color: #444;
         }
 
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-placeholder">
-            <!-- اینجا بعداً لوگو رو می‌ذاریم -->
-            LOGO HERE
+    <header class="header-container">
+        <div class="logo-wrapper">
+            <img src="https://www.upload.ee/image/19665651/logo.jpg" alt="Peykan Khan Logo">
         </div>
-        <h1>پیکان‌خان</h1>
-        <p>دنیای نویسندگی، گیمینگ و تکنولوژی</p>
+        <h1>پیکان خان</h1>
     </header>
 
-    <div class="container">
-        <p>خوش اومدی!ه.</p>
-        <a href="#" class="btn">بیشتر بدانید</a>
-    </div>
+    <main class="main-content">
+        <!-- اگر متن خاصی مد نظرت هست، همینجا جایگزین کن -->
+        <section class="card">
+            <p>خوش آمدید به وب‌سایت رسمی پیکان خان</p>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2026 Peykan Khan
+    </footer>
 
 </body>
-    </html>
+</html>
