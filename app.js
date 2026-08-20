@@ -2,7 +2,7 @@
    پیکان‌خان - نسخه ایمن
 ======================================= */
 
-const posts = [];
+let posts = [];
 
 const categories = {
     movies: [
