@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>صفحه پیدا نشد | پیکان‌خان</title>
+
+    <meta
+        name="description"
+        content="صفحه‌ای که به دنبال آن هستید در پیکان‌خان پیدا نشد."
+    >
+
+    <link rel="icon" href="https://www.upload.ee/image/19665651/logo.jpg">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ffcc00;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --muted: #9a9a9a;
+            --border: #333333;
+            --text: #ffffff;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+            background:
+                radial-gradient(
+                    circle at 50% 25%,
+                    #292929,
+                    var(--bg) 70%
+                );
+
+            color: var(--text);
+            font-family: Tahoma, "Segoe UI", sans-serif;
+        }
+
+        .error-card {
+            width: 100%;
+            max-width: 520px;
+
+            border-right: 4px solid var(--primary);
+            border-radius: 20px;
+            padding: 35px 25px;
+
+            background: var(--card-bg);
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .logo {
+            width: 105px;
+            height: 105px;
+            margin: 0 auto 22px;
+
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            object-fit: cover;
+
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+        }
+
+        .error-number {
+            margin-bottom: 8px;
+
+            color: var(--primary);
+            font-size: 5rem;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-bottom: 16px;
+            color: var(--primary);
+            font-size: 1.55rem;
+        }
+
+        p {
+            color: #d0d0d0;
+            line-height: 2;
+            font-size: 0.95rem;
+        }
+
+        .funny-message {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .home-btn {
+            display: inline-block;
+            margin-top: 25px;
+
+            border-radius: 50px;
+            padding: 13px 28px;
+
+            background: var(--primary);
+            color: #121212;
+
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 18px rgba(255, 204, 0, 0.35);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 14px;
+
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 10px 20px;
+
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .copyright {
+            margin-top: 25px;
+            color: #666;
+            font-size: 0.72rem;
+        }
+
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 30px 18px;
+            }
+
+            .error-number {
+                font-size: 4.2rem;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="error-card">
+
+        <img
+            class="logo"
+            src="https://www.upload.ee/image/19665651/logo.jpg"
+            alt="لوگوی پیکان‌خان"
+        >
+
+        <div class="error-number">۴۰۴</div>
+
+        <h1>اینجا چیزی پیدا نشد! 🚗</h1>
+
+        <p>
+            صفحه‌ای که دنبالش می‌گردی یا وجود ندارد،
+            یا پیکان‌خان آن را برده تعمیرگاه!
+        </p>
+
+        <p class="funny-message">
+            نگران نباش؛ محتوای جذاب هنوز در خانه منتظر توست 😄
+        </p>
+
+        <a
+            class="home-btn"
+            href="./index.html"
+        >
+            🏠 بازگشت به خانه
+        </a>
+
+        <br>
+
+        <a
+            class="back-btn"
+            href="javascript:history.back()"
+        >
+            ← برگشت به صفحه قبلی
+        </a>
+
+        <div class="copyright">
+            © ۱۴۰۵ پیکان‌خان
+        </div>
+
+    </main>
+
+</body>
+  </html>
+  
