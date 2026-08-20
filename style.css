@@ -715,4 +715,88 @@ body {
 .share-site-btn:active {
     transform: scale(0.97);
     }
-    
+    /* =====================================================
+   حالت روشن سایت
+===================================================== */
+
+body.light-theme {
+    --bg: #f2f2f2;
+    --card-bg: #ffffff;
+    --card-light: #eeeeee;
+    --nav-bg: #ffffff;
+    --text: #1d1d1d;
+    --muted: #666666;
+    --border: #d5d5d5;
+}
+
+body.light-theme {
+    background: var(--bg);
+    color: var(--text);
+}
+
+body.light-theme .landing {
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            #ffffff,
+            #eeeeee 70%
+        );
+}
+
+body.light-theme .logo-wrapper {
+    background: #ffffff;
+}
+
+body.light-theme .card p,
+body.light-theme .info-card p,
+body.light-theme .single-post .post-content {
+    color: #444444;
+}
+
+body.light-theme .contact-item,
+body.light-theme .contact-note {
+    background: #f7f7f7;
+}
+
+body.light-theme .contact-item:hover {
+    background: #eeeeee;
+}
+
+body.light-theme .search-box input {
+    background: #ffffff;
+    color: #222222;
+}
+
+body.light-theme .bottom-nav {
+    border-top-color: #d5d5d5;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+
+    background: var(--card-bg);
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.theme-toggle:active {
+    transform: scale(0.97);
+}
