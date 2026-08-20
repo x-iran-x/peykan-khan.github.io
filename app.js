@@ -1,925 +1,274 @@
-/* =====================================================
-   پست‌های سایت
-===================================================== */
+/* =======================================
+   پیکان‌خان - نسخه ایمن
+======================================= */
 
-const posts = [
-    /*
-    نمونه پست:
-
-    {
-        id: 1,
-        title: "نام پست",
-        type: "movie",
-        category: "cinema",
-        date: "۲۹ مرداد ۱۴۰۵",
-        description: "توضیح کوتاه پست",
-        content: "متن کامل پست"
-    }
-    */
-];
-
-
-/* =====================================================
-   دسته‌بندی‌ها
-===================================================== */
+const posts = [];
 
 const categories = {
     movies: [
-        {
-            id: "education",
-            title: "فیلم آموزشی",
-            icon: "🎓",
-            description: "آموزش‌های ویدیویی"
-        },
-        {
-            id: "cinema",
-            title: "فیلم سینمایی",
-            icon: "🍿",
-            description: "فیلم‌های سینمایی"
-        },
-        {
-            id: "short-series",
-            title: "سریال کوتاه",
-            icon: "📺",
-            description: "این بخش به‌زودی فعال می‌شود",
-            comingSoon: true
-        }
+        { id: "education", title: "فیلم آموزشی", icon: "🎓", description: "آموزش‌های ویدیویی" },
+        { id: "cinema", title: "فیلم سینمایی", icon: "🍿", description: "فیلم‌های سینمایی" },
+        { id: "short-series", title: "سریال کوتاه", icon: "📺", description: "به‌زودی", comingSoon: true }
     ],
-
     books: [
-        {
-            id: "history",
-            title: "تاریخی",
-            icon: "🏛️",
-            description: "کتاب‌های تاریخی"
-        },
-        {
-            id: "story",
-            title: "داستان",
-            icon: "📖",
-            description: "رمان و داستان"
-        },
-        {
-            id: "children",
-            title: "کودک",
-            icon: "🧸",
-            description: "کتاب‌های کودک"
-        }
+        { id: "history", title: "تاریخی", icon: "🏛️", description: "کتاب‌های تاریخی" },
+        { id: "story", title: "داستان", icon: "📖", description: "رمان و داستان" },
+        { id: "children", title: "کودک", icon: "🧸", description: "کتاب‌های کودک" }
     ],
-
     mods: [
-        {
-            id: "gta-v",
-            title: "GTA V",
-            icon: "🚗",
-            description: "مودهای جی‌تی‌ای‌وی"
-        },
-        {
-            id: "bomb-squad",
-            title: "Bomb Squad",
-            icon: "💣",
-            description: "مودهای بمب اسکواد"
-        }
+        { id: "gta-v", title: "GTA V", icon: "🚗", description: "مودهای جی‌تی‌ای‌وی" },
+        { id: "bomb-squad", title: "Bomb Squad", icon: "💣", description: "مودهای بمب اسکواد" }
     ],
-
     articles: [
-        {
-            id: "tutorial",
-            title: "آموزشی",
-            icon: "🎓",
-            description: "مقاله‌های آموزشی"
-        },
-        {
-            id: "other",
-            title: "متفرقه",
-            icon: "📝",
-            description: "مطالب متفرقه"
-        }
+        { id: "tutorial", title: "آموزشی", icon: "🎓", description: "مقاله‌های آموزشی" },
+        { id: "other", title: "متفرقه", icon: "📝", description: "مطالب متفرقه" }
     ]
 };
 
+/* ---------- توابع کمکی ---------- */
 
-/* =====================================================
-   تنظیمات بخش‌ها
-===================================================== */
-
-const sectionSettings = {
-    moviesPage: {
-        categoryKey: "movies",
-        postsType: "movie",
-        categoryContainer: "movieCategories",
-        postsContainer: "moviePosts"
-    },
-
-    booksPage: {
-        categoryKey: "books",
-        postsType: "book",
-        categoryContainer: "bookCategories",
-        postsContainer: "bookPosts"
-    },
-
-    modsPage: {
-        categoryKey: "mods",
-        postsType: "mod",
-        categoryContainer: "modCategories",
-        postsContainer: "modPosts"
-    },
-
-    articlesPage: {
-        categoryKey: "articles",
-        postsType: "article",
-        categoryContainer: "articleCategories",
-        postsContainer: "articlePosts"
-    }
-};
-
-
-/* =====================================================
-   عناصر اصلی صفحه
-===================================================== */
-
-const landing = document.getElementById("landing");
-const siteContent = document.getElementById("siteContent");
-const bottomNav = document.getElementById("bottomNav");
-const goBtn = document.getElementById("goBtn");
-const toast = document.getElementById("toast");
-
-const skipLandingCheckbox =
-    document.getElementById("skipLanding");
-
-
-/* =====================================================
-   ابزار اعلان
-===================================================== */
-
-function showToast(message) {
-    if (!toast) {
-        return;
-    }
-
-    toast.textContent = message;
-    toast.classList.add("show");
-
+function toast(message) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+    t.textContent = message;
+    t.classList.add("show");
     setTimeout(function () {
-        toast.classList.remove("show");
+        t.classList.remove("show");
     }, 3000);
 }
 
-
-/* =====================================================
-   تغییر صفحه
-===================================================== */
-
 function showPage(pageId) {
-    const allPages =
-        document.querySelectorAll(".page-section");
-
-    allPages.forEach(function (page) {
-        page.classList.remove("active-page");
+    document.querySelectorAll(".page-section").forEach(function (p) {
+        p.classList.remove("active-page");
     });
-
-    const selectedPage =
-        document.getElementById(pageId);
-
-    if (!selectedPage) {
-        console.error("صفحه پیدا نشد:", pageId);
-        showToast("صفحه موردنظر پیدا نشد.");
+    const page = document.getElementById(pageId);
+    if (!page) {
+        toast("صفحه پیدا نشد.");
         return;
     }
-
-    selectedPage.classList.add("active-page");
-
-    document.querySelectorAll(".nav-item").forEach(function (item) {
-        item.classList.toggle(
-            "active",
-            item.dataset.page === pageId
-        );
+    page.classList.add("active-page");
+    document.querySelectorAll(".nav-item").forEach(function (i) {
+        i.classList.toggle("active", i.dataset.page === pageId);
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+/* ---------- دکمه‌های دارای data-page (منو پایین، فوتر، بازگشت) ---------- */
+function setupPageButtons() {
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest("[data-page]");
+        if (btn) {
+            showPage(btn.getAttribute("data-page"));
+        }
     });
 }
 
+/* ---------- دکمه بزن بریم ---------- */
+function setupLanding() {
+    const goBtn = document.getElementById("goBtn");
+    if (!goBtn) return;
+    goBtn.addEventListener("click", function () {
+        const landing = document.getElementById("landing");
+        const siteContent = document.getElementById("siteContent");
+        const bottomNav = document.getElementById("bottomNav");
+        const skip = document.getElementById("skipLanding");
 
-/* =====================================================
-   ورود به سایت
-===================================================== */
-
-function enterSite() {
-    if (landing) {
-        landing.classList.add("hidden");
-    }
-
-    setTimeout(function () {
-        if (landing) {
-            landing.style.display = "none";
+        if (skip && skip.checked) {
+            localStorage.setItem("peykanKhanSkipLanding", "true");
         }
 
+        if (landing) landing.style.display = "none";
         if (siteContent) {
-            siteContent.classList.add("visible");
+            siteContent.style.display = "block";
+            siteContent.style.visibility = "visible";
+            siteContent.style.opacity = "1";
         }
-
-        if (bottomNav) {
-            bottomNav.classList.add("show");
-        }
+        if (bottomNav) bottomNav.style.display = "flex";
 
         showPage("homePage");
-    }, 600);
+    });
+
+    if (localStorage.getItem("peykanKhanSkipLanding") === "true") {
+        const landing = document.getElementById("landing");
+        const siteContent = document.getElementById("siteContent");
+        const bottomNav = document.getElementById("bottomNav");
+        if (landing) landing.style.display = "none";
+        if (siteContent) siteContent.style.display = "block";
+        if (bottomNav) bottomNav.style.display = "flex";
+        showPage("homePage");
+    }
 }
 
+/* ---------- داشبورد، تم و اشتراک ---------- */
+function setupDashboard() {
+    const panel = document.getElementById("dashboardPanel");
+    const overlay = document.getElementById("dashboardOverlay");
 
-const skipLanding =
-    localStorage.getItem("peykanKhanSkipLanding") === "true";
-
-
-if (skipLanding) {
-    if (landing) {
-        landing.style.display = "none";
+    function openDb() {
+        if (panel) panel.classList.add("open");
+        if (overlay) overlay.classList.add("open");
+    }
+    function closeDb() {
+        if (panel) panel.classList.remove("open");
+        if (overlay) overlay.classList.remove("open");
     }
 
-    if (siteContent) {
-        siteContent.classList.add("visible");
-    }
+    const openBtn = document.getElementById("dashboardOpenBtn");
+    if (openBtn) openBtn.addEventListener("click", openDb);
 
-    if (bottomNav) {
-        bottomNav.classList.add("show");
-    }
+    const closeBtn = document.getElementById("dashboardCloseBtn");
+    if (closeBtn) closeBtn.addEventListener("click", closeDb);
+    if (overlay) overlay.addEventListener("click", closeDb);
 
-    showPage("homePage");
-}
+    const contactBtn = document.getElementById("dashboardContactBtn");
+    if (contactBtn) contactBtn.addEventListener("click", function () {
+        closeDb();
+        showPage("contactPage");
+    });
 
-
-if (goBtn) {
-    goBtn.addEventListener("click", function () {
-        if (
-            skipLandingCheckbox &&
-            skipLandingCheckbox.checked
-        ) {
-            localStorage.setItem(
-                "peykanKhanSkipLanding",
-                "true"
-            );
+    const shareBtn = document.getElementById("dashboardShareBtn");
+    if (shareBtn) shareBtn.addEventListener("click", function () {
+        const data = { title: "پیکان‌خان", text: "به هاب سرگرمی پیکان‌خان سر بزن 🚗", url: location.href };
+        if (navigator.share) {
+            navigator.share(data).catch(function () {});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(location.href).then(function () {
+                toast("لینک کپی شد 📋");
+            }).catch(function () {});
         }
+    });
 
-        enterSite();
+    const shareSiteBtn = document.getElementById("shareSiteBtn");
+    if (shareSiteBtn) shareSiteBtn.addEventListener("click", function () {
+        const data = { title: "پیکان‌خان", text: "به هاب سرگرمی پیکان‌خان سر بزن 🚗", url: location.href };
+        if (navigator.share) navigator.share(data).catch(function () {});
+        else if (navigator.clipboard) navigator.clipboard.writeText(location.href).catch(function () {});
     });
 }
 
-
-/* =====================================================
-   ساخت کارت پست
-===================================================== */
-
-function createPostCard(post) {
-    const card = document.createElement("article");
-    card.className = "card";
-
-    card.innerHTML = `
-        <h3>${post.title || "بدون عنوان"}</h3>
-
-        <p>
-            ${post.description ||
-            "توضیحی برای این پست ثبت نشده است."}
-        </p>
-
-        <div class="card-meta">
-            <span>🗓 ${post.date || "بدون تاریخ"}</span>
-            <span>🏷 ${post.categoryName ||
-            "بدون دسته‌بندی"}</span>
-        </div>
-
-        <span class="open-post" data-post-id="${post.id}">
-            مشاهده‌ی کامل پست ←
-        </span>
-    `;
-
-    const openButton =
-        card.querySelector(".open-post");
-
-    if (openButton) {
-        openButton.addEventListener("click", function () {
-            openPost(post.id);
-        });
+/* ---------- تم ---------- */
+function setupTheme() {
+    function setTheme(theme) {
+        const light = theme === "light";
+        document.body.classList.toggle("light-theme", light);
+        localStorage.setItem("peykanKhanTheme", light ? "light" : "dark");
+        toast(light ? "حالت روشن ☀️" : "حالت تاریک 🌙");
     }
 
-    return card;
-}
+    const lightBtn = document.getElementById("lightThemeBtn");
+    if (lightBtn) lightBtn.addEventListener("click", function () { setTheme("light"); });
 
+    const darkBtn = document.getElementById("darkThemeBtn");
+    if (darkBtn) darkBtn.addEventListener("click", function () { setTheme("dark"); });
 
-/* =====================================================
-   نمایش پست‌های تازه در خانه
-===================================================== */
-
-function renderLatestPosts() {
-    const container =
-        document.getElementById("latestPosts");
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = "";
-
-    const latestPosts = [...posts]
-        .sort(function (a, b) {
-            return Number(b.id) - Number(a.id);
-        })
-        .slice(0, 10);
-
-    if (latestPosts.length === 0) {
-        container.innerHTML = `
-            <div class="empty-message">
-                هنوز پست جدیدی منتشر نشده است.<br>
-                به‌زودی مطالب جذاب پیکان‌خان اینجا قرار می‌گیرند 🚀
-            </div>
-        `;
-
-        return;
-    }
-
-    latestPosts.forEach(function (post) {
-        container.appendChild(
-            createPostCard(post)
-        );
+    const themeToggle = document.getElementById("themeToggle");
+    if (themeToggle) themeToggle.addEventListener("click", function () {
+        const isLight = document.body.classList.contains("light-theme");
+        setTheme(isLight ? "dark" : "light");
     });
+
+    const themeMenuBtn = document.getElementById("themeMenuBtn");
+    const themeBackBtn = document.getElementById("themeBackBtn");
+    const dashboardMain = document.getElementById("dashboardMain");
+    const themePanelContent = document.getElementById("themePanelContent");
+
+    if (themeMenuBtn) themeMenuBtn.addEventListener("click", function () {
+        if (dashboardMain) dashboardMain.classList.add("hidden");
+        if (themePanelContent) themePanelContent.classList.add("active");
+    });
+    if (themeBackBtn) themeBackBtn.addEventListener("click", function () {
+        if (dashboardMain) dashboardMain.classList.remove("hidden");
+        if (themePanelContent) themePanelContent.classList.remove("active");
+    });
+
+    if (localStorage.getItem("peykanKhanTheme") === "light") {
+        document.body.classList.add("light-theme");
+    }
 }
 
+/* ---------- جست‌وجو ---------- */
+function setupSearch() {
+    const input = document.getElementById("searchInput");
+    if (!input) return;
 
-/* =====================================================
-   نمایش دسته‌بندی‌ها
-===================================================== */
-
-function renderCategories() {
-    Object.values(sectionSettings).forEach(function (settings) {
-        const container =
-            document.getElementById(
-                settings.categoryContainer
-            );
-
-        const categoryList =
-            categories[settings.categoryKey];
-
-        if (!container || !categoryList) {
+    function doSearch() {
+        const message = document.getElementById("searchMessage");
+        const results = document.getElementById("searchResults");
+        const q = input.value.trim().toLowerCase();
+        if (results) results.innerHTML = "";
+        if (!q) {
+            if (message) message.textContent = "نام چیزی را بنویس که جست‌وجو کنی.";
             return;
         }
-
-        container.innerHTML = "";
-
-        categoryList.forEach(function (category) {
-            const button =
-                document.createElement("button");
-
-            button.className = "category-card";
-            button.type = "button";
-
-            button.innerHTML = `
-                <span class="category-icon">
-                    ${category.icon}
-                </span>
-
-                <strong>${category.title}</strong>
-                <small>${category.description}</small>
-            `;
-
-            button.addEventListener("click", function () {
-                if (category.comingSoon) {
-                    showToast(
-                        "این بخش به‌زودی فعال می‌شود 🚧"
-                    );
-                    return;
-                }
-
-                renderCategoryPosts(
-                    settings.postsType,
-                    category.id,
-                    settings.postsContainer,
-                    category.title
-                );
+        const found = posts.filter(function (p) {
+            return String(p.title || "").toLowerCase().includes(q) ||
+                   String(p.description || "").toLowerCase().includes(q);
+        });
+        if (found.length === 0) {
+            if (message) message.textContent = "پستی پیدا نشد.";
+            return;
+        }
+        if (message) message.textContent = found.length + " نتیجه پیدا شد.";
+        if (results) {
+            found.forEach(function (p) {
+                const c = document.createElement("article");
+                c.className = "card";
+                c.innerHTML = "<h3>" + p.title + "</h3><p>" + (p.description || "") + "</p>";
+                results.appendChild(c);
             });
-
-            container.appendChild(button);
-        });
-    });
-}
-
-
-/* =====================================================
-   نمایش پست‌های یک دسته
-===================================================== */
-
-function renderCategoryPosts(
-    type,
-    categoryId,
-    containerId,
-    categoryTitle
-) {
-    const container =
-        document.getElementById(containerId);
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = "";
-
-    const filteredPosts =
-        posts.filter(function (post) {
-            return (
-                post.type === type &&
-                post.category === categoryId
-            );
-        });
-
-    if (filteredPosts.length === 0) {
-        container.innerHTML = `
-            <div class="empty-message">
-                در دسته‌ی «${categoryTitle}»
-                هنوز پستی قرار نگرفته است.
-            </div>
-        `;
-
-        return;
-    }
-
-    filteredPosts.forEach(function (post) {
-        container.appendChild(
-            createPostCard(post)
-        );
-    });
-}
-
-
-/* =====================================================
-   آماده‌سازی نام دسته‌بندی‌ها
-===================================================== */
-
-function preparePosts() {
-    const allCategories = [
-        ...categories.movies,
-        ...categories.books,
-        ...categories.mods,
-        ...categories.articles
-    ];
-
-    posts.forEach(function (post) {
-        const category =
-            allCategories.find(function (item) {
-                return item.id === post.category;
-            });
-
-        post.categoryName = category
-            ? category.title
-            : "بدون دسته‌بندی";
-    });
-}
-
-
-/* =====================================================
-   منوی پایین
-===================================================== */
-
-document.querySelectorAll(".nav-item").forEach(function (item) {
-    item.addEventListener("click", function () {
-        const pageId =
-            item.getAttribute("data-page");
-
-        if (pageId) {
-            showPage(pageId);
         }
-    });
-});
-
-
-/* =====================================================
-   لینک‌های فوتر
-===================================================== */
-
-document.addEventListener("click", function (event) {
-    const footerLink =
-        event.target.closest(".footer-link");
-
-    if (!footerLink) {
-        return;
     }
 
-    const pageId =
-        footerLink.getAttribute("data-page");
-
-    if (pageId) {
-        showPage(pageId);
-    }
-});
-
-
-/* =====================================================
-   دکمه‌های بازگشت
-===================================================== */
-
-document.querySelectorAll(".back-btn").forEach(function (button) {
-    button.addEventListener("click", function () {
-        const pageId =
-            button.getAttribute("data-page");
-
-        if (pageId) {
-            showPage(pageId);
-        }
-    });
-});
-
-
-/* =====================================================
-   بازکردن پست
-===================================================== */
-
-function openPost(postId) {
-    const post =
-        posts.find(function (item) {
-            return String(item.id) === String(postId);
-        });
-
-    if (!post) {
-        showToast("پست موردنظر پیدا نشد.");
-        return;
-    }
-
-    const container =
-        document.getElementById("singlePost");
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = `
-        <h1>${post.title || "بدون عنوان"}</h1>
-
-        <span class="post-date">
-            🗓 ${post.date || "بدون تاریخ"} |
-            🏷 ${post.categoryName ||
-            "بدون دسته‌بندی"}
-        </span>
-
-        <div class="post-content">
-            ${post.content ||
-            post.description ||
-            "محتوایی ثبت نشده است."}
-        </div>
-    `;
-
-    showPage("postPage");
-}
-
-
-/* =====================================================
-   جست‌وجوی پست‌ها
-===================================================== */
-
-function searchPosts() {
-    const input =
-        document.getElementById("searchInput");
-
-    const message =
-        document.getElementById("searchMessage");
-
-    const results =
-        document.getElementById("searchResults");
-
-    if (!input || !message || !results) {
-        return;
-    }
-
-    const query =
-        input.value.trim().toLowerCase();
-
-    results.innerHTML = "";
-
-    if (!query) {
-        message.textContent =
-            "نام چیزی را که می‌خواهی جست‌وجو کنی بنویس.";
-        return;
-    }
-
-    const foundPosts =
-        posts.filter(function (post) {
-            const searchableText = `
-                ${post.title || ""}
-                ${post.description || ""}
-                ${post.content || ""}
-                ${post.category || ""}
-                ${post.categoryName || ""}
-            `.toLowerCase();
-
-            return searchableText.includes(query);
-        });
-
-    if (foundPosts.length === 0) {
-        message.textContent =
-            `برای «${input.value}» پستی پیدا نشد.`;
-        return;
-    }
-
-    message.textContent =
-        `${foundPosts.length} نتیجه برای «${input.value}» پیدا شد.`;
-
-    foundPosts.forEach(function (post) {
-        results.appendChild(
-            createPostCard(post)
-        );
+    const btn = document.getElementById("searchBtn");
+    if (btn) btn.addEventListener("click", doSearch);
+    input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") doSearch();
     });
 }
 
-
-const searchButton =
-    document.getElementById("searchBtn");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-
-if (searchButton) {
-    searchButton.addEventListener(
-        "click",
-        searchPosts
-    );
-}
-
-if (searchInput) {
-    searchInput.addEventListener(
-        "keydown",
-        function (event) {
-            if (event.key === "Enter") {
-                searchPosts();
-            }
-        }
-    );
-}
-
-
-/* =====================================================
-   داشبورد کشویی
-===================================================== */
-
-const dashboardOpenBtn =
-    document.getElementById("dashboardOpenBtn");
-
-const dashboardCloseBtn =
-    document.getElementById("dashboardCloseBtn");
-
-const dashboardOverlay =
-    document.getElementById("dashboardOverlay");
-
-const dashboardPanel =
-    document.getElementById("dashboardPanel");
-
-const dashboardMain =
-    document.getElementById("dashboardMain");
-
-const themePanelContent =
-    document.getElementById("themePanelContent");
-
-const themeMenuBtn =
-    document.getElementById("themeMenuBtn");
-
-const themeBackBtn =
-    document.getElementById("themeBackBtn");
-
-const dashboardContactBtn =
-    document.getElementById("dashboardContactBtn");
-
-const dashboardShareBtn =
-    document.getElementById("dashboardShareBtn");
-
-const lightThemeBtn =
-    document.getElementById("lightThemeBtn");
-
-const darkThemeBtn =
-    document.getElementById("darkThemeBtn");
-
-
-function openDashboard() {
-    if (!dashboardPanel || !dashboardOverlay) {
-        return;
-    }
-
-    dashboardPanel.classList.add("open");
-    dashboardOverlay.classList.add("open");
-
-    dashboardPanel.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    showDashboardMain();
-}
-
-
-function closeDashboard() {
-    if (!dashboardPanel || !dashboardOverlay) {
-        return;
-    }
-
-    dashboardPanel.classList.remove("open");
-    dashboardOverlay.classList.remove("open");
-
-    dashboardPanel.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-}
-
-
-function showDashboardMain() {
-    if (dashboardMain) {
-        dashboardMain.classList.remove("hidden");
-    }
-
-    if (themePanelContent) {
-        themePanelContent.classList.remove("active");
-    }
-}
-
-
-function showThemePanel() {
-    if (dashboardMain) {
-        dashboardMain.classList.add("hidden");
-    }
-
-    if (themePanelContent) {
-        themePanelContent.classList.add("active");
-    }
-
-    updateThemeChoices();
-}
-
-
-function updateThemeChoices() {
-    const currentTheme =
-        document.body.classList.contains("light-theme")
-            ? "light"
-            : "dark";
-
-    if (lightThemeBtn) {
-        lightThemeBtn.classList.toggle(
-            "selected",
-            currentTheme === "light"
-        );
-    }
-
-    if (darkThemeBtn) {
-        darkThemeBtn.classList.toggle(
-            "selected",
-            currentTheme === "dark"
-        );
-    }
-}
-
-
-function setSiteTheme(theme) {
-    const isLight =
-        theme === "light";
-
-    document.body.classList.toggle(
-        "light-theme",
-        isLight
-    );
-
-    localStorage.setItem(
-        "peykanKhanTheme",
-        isLight ? "light" : "dark"
-    );
-
-    updateThemeChoices();
-
-    showToast(
-        isLight
-            ? "حالت روشن فعال شد ☀️"
-            : "حالت تاریک فعال شد 🌙"
-    );
-}
-
-
-function shareSite() {
-    const shareData = {
-        title: "پیکان‌خان",
-        text: "به هاب سرگرمی پیکان‌خان سر بزن 🚗",
-        url: window.location.href
+/* ---------- دسته‌بندی‌ها ---------- */
+function renderAllCategories() {
+    const map = {
+        movieCategories: categories.movies,
+        bookCategories: categories.books,
+        modCategories: categories.mods,
+        articleCategories: categories.articles
     };
 
-    if (navigator.share) {
-        navigator.share(shareData).catch(function (error) {
-            if (error.name !== "AbortError") {
-                showToast("اشتراک‌گذاری انجام نشد.");
-            }
+    Object.keys(map).forEach(function (containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = "";
+        map[containerId].forEach(function (cat) {
+            const b = document.createElement("button");
+            b.className = "category-card";
+            b.type = "button";
+            b.innerHTML = '<span class="category-icon">' + cat.icon +
+                '</span><strong>' + cat.title + '</strong><small>' + cat.description + '</small>';
+            b.addEventListener("click", function () {
+                if (cat.comingSoon) {
+                    toast("این بخش به‌زودی فعال می‌شود 🚧");
+                } else {
+                    toast("«" + cat.title + "» هنوز پستی ندارد.");
+                }
+            });
+            container.appendChild(b);
         });
-
-        return;
-    }
-
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(
-            window.location.href
-        ).then(function () {
-            showToast(
-                "لینک سایت کپی شد؛ حالا آن را برای دوستانت بفرست 📋"
-            );
-        }).catch(function () {
-            showToast("کپی لینک انجام نشد.");
-        });
-
-        return;
-    }
-
-    showToast(
-        "مرورگر شما از اشتراک‌گذاری پشتیبانی نمی‌کند."
-    );
+    });
 }
 
-
-if (dashboardOpenBtn) {
-    dashboardOpenBtn.addEventListener(
-        "click",
-        openDashboard
-    );
+/* ---------- اجرای همه چیز ---------- */
+function init() {
+    setupPageButtons();
+    try { setupLanding(); } catch (err) { console.error(err); }
+    try { setupDashboard(); } catch (err) { console.error(err); }
+    try { setupTheme(); } catch (err) { console.error(err); }
+    try { setupSearch(); } catch (err) { console.error(err); }
+    try { renderAllCategories(); } catch (err) { console.error(err); }
 }
 
-if (dashboardCloseBtn) {
-    dashboardCloseBtn.addEventListener(
-        "click",
-        closeDashboard
-    );
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+} else {
+    init();
 }
-
-if (dashboardOverlay) {
-    dashboardOverlay.addEventListener(
-        "click",
-        closeDashboard
-    );
-}
-
-if (themeMenuBtn) {
-    themeMenuBtn.addEventListener(
-        "click",
-        showThemePanel
-    );
-}
-
-if (themeBackBtn) {
-    themeBackBtn.addEventListener(
-        "click",
-        showDashboardMain
-    );
-}
-
-if (dashboardContactBtn) {
-    dashboardContactBtn.addEventListener(
-        "click",
-        function () {
-            closeDashboard();
-            showPage("contactPage");
-        }
-    );
-}
-
-if (dashboardShareBtn) {
-    dashboardShareBtn.addEventListener(
-        "click",
-        shareSite
-    );
-}
-
-if (lightThemeBtn) {
-    lightThemeBtn.addEventListener(
-        "click",
-        function () {
-            setSiteTheme("light");
-        }
-    );
-}
-
-if (darkThemeBtn) {
-    darkThemeBtn.addEventListener(
-        "click",
-        function () {
-            setSiteTheme("dark");
-        }
-    );
-}
-
-
-/* =====================================================
-   اجرای تم ذخیره‌شده
-===================================================== */
-
-const savedDashboardTheme =
-    localStorage.getItem("peykanKhanTheme");
-
-if (savedDashboardTheme === "light") {
-    document.body.classList.add("light-theme");
-}
-
-updateThemeChoices();
-
-
-/* =====================================================
-  
