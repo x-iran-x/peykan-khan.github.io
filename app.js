@@ -4,6 +4,33 @@
 
 let posts = [];
 
+fetch("./posts.json")
+    .then(function (response) {
+        if (!response.ok) {
+            throw new Error("فایل posts.json پیدا نشد");
+        }
+
+        return response.json();
+    })
+    .then(function (data) {
+        posts = data;
+
+        if (typeof preparePosts === "function") {
+            preparePosts();
+        }
+
+        if (typeof renderLatestPosts === "function") {
+            renderLatestPosts();
+        }
+
+        if (typeof renderCategories === "function") {
+            renderCategories();
+        }
+    })
+    .catch(function (error) {
+        console.error("خطا در بارگذاری پست‌ها:", error);
+    });
+
 const categories = {
     movies: [
         { id: "education", title: "فیلم آموزشی", icon: "🎓", description: "آموزش‌های ویدیویی" },
