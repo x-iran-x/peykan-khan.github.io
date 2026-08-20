@@ -658,3 +658,50 @@ if (shareSiteButton) {
         }
     });
         }
+/* =====================================================
+   حالت روشن و تاریک سایت
+===================================================== */
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const savedTheme =
+    localStorage.getItem("peykanKhanTheme");
+
+
+if (savedTheme === "light") {
+    document.body.classList.add("light-theme");
+}
+
+
+function updateThemeButton() {
+    if (!themeToggle) {
+        return;
+    }
+
+    const isLightTheme =
+        document.body.classList.contains("light-theme");
+
+    themeToggle.textContent = isLightTheme
+        ? "🌙 حالت تاریک"
+        : "☀️ حالت روشن";
+}
+
+
+if (themeToggle) {
+    updateThemeButton();
+
+    themeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("light-theme");
+
+        const isLightTheme =
+            document.body.classList.contains("light-theme");
+
+        localStorage.setItem(
+            "peykanKhanTheme",
+            isLightTheme ? "light" : "dark"
+        );
+
+        updateThemeButton();
+    });
+           }
