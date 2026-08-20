@@ -684,3 +684,35 @@ body {
 .skip-landing-option:hover {
     color: var(--primary);
 }
+/* دکمه اشتراک‌گذاری سایت */
+
+.share-site-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-top: 16px;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    padding: 10px 16px;
+
+    background: rgba(255, 204, 0, 0.08);
+    color: var(--primary);
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.share-site-btn:hover {
+    background: var(--primary);
+    color: #121212;
+    transform: translateY(-2px);
+}
+
+.share-site-btn:active {
+    transform: scale(0.97);
+    }
+    
