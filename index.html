@@ -70,6 +70,16 @@
         <!-- صفحه خانه -->
         <section class="page-section active-page" id="homePage">
 
+            <!-- دکمه داشبورد -->
+<button
+    class="dashboard-open-btn"
+    id="dashboardOpenBtn"
+    type="button"
+    aria-label="باز کردن داشبورد"
+>
+    ☰ داشبورد
+</button>
+            
 <header class="home-header">
     <h2>📢 پست‌های تازه</h2>
     <p>جدیدترین مطالب پیکان خان</p>
@@ -438,6 +448,135 @@
 
         </section>
 
+        <!-- لایه تاریک پشت داشبورد -->
+<div
+    class="dashboard-overlay"
+    id="dashboardOverlay"
+></div>
+
+
+<!-- داشبورد کشویی -->
+<aside
+    class="dashboard-panel"
+    id="dashboardPanel"
+    aria-hidden="true"
+>
+
+    <div class="dashboard-header">
+        <h2>⚙️ داشبورد</h2>
+
+        <button
+            class="dashboard-close-btn"
+            id="dashboardCloseBtn"
+            type="button"
+            aria-label="بستن داشبورد"
+        >
+            ×
+        </button>
+    </div>
+
+
+    <!-- صفحه اصلی داشبورد -->
+    <div
+        class="dashboard-main"
+        id="dashboardMain"
+    >
+
+        <button
+            class="dashboard-item"
+            id="themeMenuBtn"
+            type="button"
+        >
+            <span class="dashboard-item-icon">🎨</span>
+
+            <span class="dashboard-item-text">
+                <strong>تم و ظاهر</strong>
+                <small>انتخاب حالت روشن یا تاریک</small>
+            </span>
+
+            <b>←</b>
+        </button>
+
+
+        <button
+            class="dashboard-item"
+            id="dashboardContactBtn"
+            type="button"
+        >
+            <span class="dashboard-item-icon">📬</span>
+
+            <span class="dashboard-item-text">
+                <strong>ارتباط با ما</strong>
+                <small>راه‌های ارتباط با پیکان‌خان</small>
+            </span>
+
+            <b>←</b>
+        </button>
+
+
+        <button
+            class="dashboard-item"
+            id="dashboardShareBtn"
+            type="button"
+        >
+            <span class="dashboard-item-icon">📤</span>
+
+            <span class="dashboard-item-text">
+                <strong>اشتراک‌گذاری سایت</strong>
+                <small>فرستادن پیکان‌خان برای دوستان</small>
+            </span>
+
+            <b>←</b>
+        </button>
+
+    </div>
+
+
+    <!-- صفحه انتخاب تم -->
+    <div
+        class="theme-panel-content"
+        id="themePanelContent"
+    >
+
+        <button
+            class="dashboard-back-btn"
+            id="themeBackBtn"
+            type="button"
+        >
+            → بازگشت به داشبورد
+        </button>
+
+        <h3>🎨 انتخاب ظاهر سایت</h3>
+
+        <button
+            class="theme-choice"
+            id="lightThemeBtn"
+            type="button"
+        >
+            <span>☀️</span>
+            <span>
+                <strong>حالت روشن</strong>
+                <small>مناسب استفاده در روز</small>
+            </span>
+        </button>
+
+
+        <button
+            class="theme-choice"
+            id="darkThemeBtn"
+            type="button"
+        >
+            <span>🌙</span>
+            <span>
+                <strong>حالت تاریک</strong>
+                <small>ظاهر اصلی پیکان‌خان</small>
+            </span>
+        </button>
+
+    </div>
+
+            </aside>
+            
     </main>
 
 
