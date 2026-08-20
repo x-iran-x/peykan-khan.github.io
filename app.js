@@ -617,3 +617,44 @@ function showToast(message) {
 preparePosts();
 renderLatestPosts();
 renderCategories();
+
+/* =====================================================
+   اشتراک‌گذاری سایت
+===================================================== */
+
+const shareSiteButton =
+    document.getElementById("shareSiteBtn");
+
+
+if (shareSiteButton) {
+    shareSiteButton.addEventListener("click", async function () {
+        const shareData = {
+            title: "پیکان‌خان",
+            text: "به هاب سرگرمی پیکان‌خان سر بزن! 🚗",
+            url: window.location.href
+        };
+
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+                showToast("اشتراک‌گذاری انجام شد ✅");
+            } else if (navigator.clipboard) {
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                showToast(
+                    "لینک سایت کپی شد؛ حالا می‌توانی آن را بفرستی 📋"
+                );
+            } else {
+                showToast(
+                    "مرورگر شما از اشتراک‌گذاری پشتیبانی نمی‌کند."
+                );
+            }
+        } catch (error) {
+            if (error.name !== "AbortError") {
+                showToast("اشتراک‌گذاری انجام نشد.");
+            }
+        }
+    });
+        }
