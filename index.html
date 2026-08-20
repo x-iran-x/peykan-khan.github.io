@@ -657,5 +657,45 @@
 
     <script src="app.js" defer></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const goBtn = document.getElementById("goBtn");
+    const landing = document.getElementById("landing");
+    const siteContent = document.getElementById("siteContent");
+    const bottomNav = document.getElementById("bottomNav");
+    const skipLanding = document.getElementById("skipLanding");
+
+    if (!goBtn) {
+        alert("دکمه بزن بریم پیدا نشد!");
+        return;
+    }
+
+    goBtn.onclick = function (event) {
+        event.preventDefault();
+
+        if (skipLanding && skipLanding.checked) {
+            localStorage.setItem(
+                "peykanKhanSkipLanding",
+                "true"
+            );
+        }
+
+        if (landing) {
+            landing.style.display = "none";
+        }
+
+        if (siteContent) {
+            siteContent.style.display = "block";
+            siteContent.style.visibility = "visible";
+            siteContent.style.opacity = "1";
+        }
+
+        if (bottomNav) {
+            bottomNav.style.display = "flex";
+        }
+    };
+});
+</script>
+
 </body>
 </html>
