@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://x-iran-x.github.io/peykan-khan.github.io/sitemap.xml
