@@ -242,6 +242,7 @@ function renderCategories() {
 }
 
 function renderCategoryCards(
+function renderCategoryCards(
     containerId,
     categoryList,
     postsContainerId,
@@ -253,6 +254,11 @@ function renderCategoryCards(
     if (!container) return;
 
     container.innerHTML = "";
+
+    // هنگام ورود به بخش، هیچ پستی نمایش داده نشود
+    if (postsContainer) {
+        postsContainer.innerHTML = "";
+    }
 
     categoryList.forEach(function (category) {
         const button = document.createElement("button");
@@ -286,25 +292,8 @@ function renderCategoryCards(
 
         container.appendChild(button);
     });
-
-    /*
-      نمایش همه پست‌های همان نوع، در ابتدای صفحه
-      تا کتاب در صفحه کتاب‌ها دیده شود.
-    */
-    if (postsContainer) {
-        const allTypePosts = posts.filter(function (post) {
-            return post.type === postType;
-        });
-
-        renderPostList(
-            postsContainer,
-            allTypePosts,
-            "در این بخش هنوز پستی منتشر نشده است."
-        );
-    }
 }
 
-function renderPostList(container, postList, emptyText) {
     if (!container) return;
 
     container.innerHTML = "";
