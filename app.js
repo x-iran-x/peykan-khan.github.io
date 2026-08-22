@@ -242,7 +242,6 @@ function renderCategories() {
 }
 
 function renderCategoryCards(
-function renderCategoryCards(
     containerId,
     categoryList,
     postsContainerId,
@@ -294,6 +293,7 @@ function renderCategoryCards(
     });
 }
 
+function renderPostList(container, postList, emptyText) {
     if (!container) return;
 
     container.innerHTML = "";
@@ -528,7 +528,7 @@ function setupTheme() {
             const isLight =
                 document.body.classList.contains("light-theme");
 
-            setTheme(isLight ? "dark" : "light");
+            setTheme(isLight ? "light" : "dark");
         });
     }
 
