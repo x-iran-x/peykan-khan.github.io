@@ -692,7 +692,8 @@ function loadPosts() {
             return response.json();
         })
         .then(function (data) {
-            posts = Array.isArray(data) ? data : [];
+            // این خط الان هر دو حالت (هم CMS و هم آرایه مستقیم) رو می‌شناسه:
+            posts = Array.isArray(data) ? data : (data.posts || []);
 
             preparePosts();
             renderLatestPosts();
