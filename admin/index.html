@@ -1,13 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>پنل مدیریت محتوای پیکان‌خان</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <!-- اسکریپت اصلی Decap CMS -->
+    <!-- کتابخانه Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <script>
+      window.CMS_MANUAL_INIT = true;
+
+      window.initCMS({
+        config: {
+          backend: {
+            name: 'github',
+            repo: 'x-iran-x/peykan-khan.github.io',
+            branch: 'main',
+            base_url: 'https://decap-cms-oauth.vercel.app'
+          },
+          media_folder: 'assets/images',
+          public_folder: 'assets/images',
+          collections: [
+            {
+              name: 'content',
+              label: 'مدیریت محتوا',
+              files: [
+                {
+                  name: 'posts_list',
+                  label: 'پست‌های سایت (کتاب، فیلم، مود)',
+                  file: 'posts.json',
+                  format: 'json',
+                  fields: [
+                    {
+                      label: 'لیست پست‌ها',
+                      name: 'posts',
+                      widget: 'list',
+                      fields: [
+                        { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int' },
+                        { label: 'عنوان پست', name: 'title', widget: 'string' },
+                        { label: 'نوع محتوا', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod'] },
+                        { label: 'دسته‌بندی', name: 'category', widget: 'string', default: 'story' },
+                        { label: 'تاریخ شمسی', name: 'date', widget: 'string', default: '۱۴۰۳/۰۶/۰۱' },
+                        { label: 'توضیح کوتاه', name: 'description', widget: 'string' },
+                        { label: 'محتوا یا کد پخش (HTML)', name: 'content', widget: 'code', default_language: 'html' }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      });
+    </script>
   </body>
 </html>
