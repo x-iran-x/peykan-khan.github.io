@@ -20,40 +20,29 @@ collections:
             name: "posts"
             widget: "list"
             fields:
-              - { label: "شناسه (ID عددی)", name: "id", widget: "number", value_type: "intماهنگ کردن `config.yml` با `posts.json`
-
-سایت پیکان‌خان همه کتاب‌ها و فیلم‌ها رو مستقیماً از فایل **`posts.json`** می‌خونه. پس باید به Decap CMS بگیم: «داداش، فایل جدید نساز! هر چی نوشتیم رو دقیقاً داخل همین فایل `posts.json` اضافه کن».
-
-1. برو توی مخزن گیت‌هاب، وارد پوشه **`admin`** شو و روی **`config.yml`** کلیک کن.
-2. روی **آیکون مداد (Edit)** بزن تا ویرایشش کنی.
-3. کل کدهای داخلش رو پاک کن و این کد جدید و دقیق رو پیست کن:
-```yaml
-backend:
-  name: github
-  repo: x-iran-x/peykan-khan.github.io
-  branch: main
-  base_url: https://decap-cms-oauth.vercel.app
-
-media_folder: "assets/images"
-public_folder: "assets/images"
-
-collections:
-  - name: "content"
-label: "مدیریت محتوا"
-files:
-- name: "posts_list"
-label: "پست‌های سایت (کتاب، فیلم، مود)"
-file: "posts.json"
-format: "json"
-fields:
-- label: "لیست پست‌ها"
-name: "posts"
-widget: "list"
-fields:
-- { label: "شناسه (ID عددی)", name: "id", widget: "number", value_type: "int" }
-- { label: "عنوان پست", name: "title", widget: "string" }
-- { label: "نوع محتوا", name: "type", widget: "select", options: ["book", "cinema", "mod"] }
-- { label: "دسته‌بندی", name: "category", widget: "string", default: "story" }
-- { label: "تاریخ شمسی", name: "date", widget: "string", default: "۱۴۰۳/۰۶/۰۱" }
-- { label: "توضیح کوتاه", name: "description", widget: "string" }
-- { label: "محتوا یا کد پخش (HTML)", name: "content", widget: "code", default_language: "html
+              - label: "شناسه (ID عددی)"
+                name: "id"
+                widget: "number"
+                value_type: "int"
+              - label: "عنوان پست"
+                name: "title"
+                widget: "string"
+              - label: "نوع محتوا"
+                name: "type"
+                widget: "select"
+                options: ["book", "cinema", "mod"]
+              - label: "دسته‌بندی"
+                name: "category"
+                widget: "string"
+                default: "story"
+              - label: "تاریخ شمسی"
+                name: "date"
+                widget: "string"
+                default: "۱۴۰۳/۰۶/۰۱"
+              - label: "توضیح کوتاه"
+                name: "description"
+                widget: "string"
+              - label: "محتوا یا کد پخش (HTML)"
+                name: "content"
+                widget: "code"
+                default_language: "html"
