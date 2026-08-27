@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>پنل مدیریت محتوای پیکان‌خان</title>
   </head>
   <body>
-    <!-- کتابخانه Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
     <script>
       window.CMS_MANUAL_INIT = true;
-
-      window.initCMS({
+    </script>
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+      CMS.init({
         config: {
           backend: {
             name: 'github',
@@ -31,7 +30,6 @@
                   name: 'posts_list',
                   label: 'پست‌های سایت (کتاب، فیلم، مود)',
                   file: 'posts.json',
-                  format: 'json',
                   fields: [
                     {
                       label: 'لیست پست‌ها',
