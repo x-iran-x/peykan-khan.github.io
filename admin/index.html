@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" class="notranslate" translate="no">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate" />
-  <title>پنل مدیریت محتوای پیکان‌خان</title>
+  <title>Peykan Khan Admin</title>
 </head>
-<body class="notranslate">
-  <!-- اسکریپت دکپ سی‌ام‌اس نسخه پایدار -->
+<body>
   <script src="https://unpkg.com/decap-cms@^3.1.0/dist/decap-cms.js"></script>
   <script>
     CMS.init({
@@ -23,23 +22,26 @@
         public_folder: '/images',
         collections: [
           {
-            name: 'posts_collection',
-            label: 'مدیریت پست‌ها',
+            name: 'posts',
+            label: 'پست‌ها',
+            delete: false,
             files: [
               {
-                name: 'posts_data',
-                label: 'تمام پست‌های سایت',
+                name: 'all_posts',
+                label: 'ویرایش و افزودن پست‌ها',
                 file: 'posts.json',
+                description: 'مدیریت کل پست‌های سایت پیکان‌خان',
                 fields: [
                   {
                     label: 'لیست پست‌ها',
                     name: 'posts',
                     widget: 'list',
+                    summary: '{{fields.title}}',
                     fields: [
-                      { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int', default: 1 },
+                      { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int' },
                       { label: 'عنوان', name: 'title', widget: 'string' },
-                      { label: 'نوع (book/cinema/mod)', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod', 'article'], default: 'book' },
-                      { label: 'دسته‌بندی (انگلیسی کوچک)', name: 'category', widget: 'string', default: 'story' },
+                      { label: 'نوع (book/cinema/mod)', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod', 'article'] },
+                      { label: 'دسته‌بندی', name: 'category', widget: 'string' },
                       { label: 'تاریخ', name: 'date', widget: 'string' },
                       { label: 'توضیحات کوتاه', name: 'description', widget: 'text' },
                       { label: 'محتوا (HTML)', name: 'content', widget: 'text' }
