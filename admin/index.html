@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" class="notranslate" translate="no">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google" content="notranslate" />
   <title>پنل مدیریت محتوای پیکان‌خان</title>
 </head>
-<body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<body class="notranslate">
+  <!-- اسکریپت دکپ سی‌ام‌اس نسخه پایدار -->
+  <script src="https://unpkg.com/decap-cms@^3.1.0/dist/decap-cms.js"></script>
   <script>
     CMS.init({
       config: {
@@ -33,21 +35,15 @@
                     label: 'لیست پست‌ها',
                     name: 'posts',
                     widget: 'list',
-                    summary: '{{fields.title}} (شناسه: {{fields.id}})',
-                    field: {
-                      label: 'پست',
-                      name: 'post_item',
-                      widget: 'object',
-                      fields: [
-                        { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int', default: 1 },
-                        { label: 'عنوان', name: 'title', widget: 'string' },
-                        { label: 'نوع (book/cinema/mod)', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod', 'article'], default: 'book' },
-                        { label: 'دسته‌بندی (انگلیسی کوچک)', name: 'category', widget: 'string', default: 'story' },
-                        { label: 'تاریخ', name: 'date', widget: 'string' },
-                        { label: 'توضیحات کوتاه', name: 'description', widget: 'text' },
-                        { label: 'محتوا (HTML)', name: 'content', widget: 'text' }
-                      ]
-                    }
+                    fields: [
+                      { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int', default: 1 },
+                      { label: 'عنوان', name: 'title', widget: 'string' },
+                      { label: 'نوع (book/cinema/mod)', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod', 'article'], default: 'book' },
+                      { label: 'دسته‌بندی (انگلیسی کوچک)', name: 'category', widget: 'string', default: 'story' },
+                      { label: 'تاریخ', name: 'date', widget: 'string' },
+                      { label: 'توضیحات کوتاه', name: 'description', widget: 'text' },
+                      { label: 'محتوا (HTML)', name: 'content', widget: 'text' }
+                    ]
                   }
                 ]
               }
