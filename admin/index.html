@@ -6,7 +6,6 @@
   <title>پنل مدیریت محتوای پیکان‌خان</title>
 </head>
 <body>
-  <!-- اسکریپت اصلی Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
     CMS.init({
@@ -17,32 +16,38 @@
           branch: 'main',
           base_url: 'https://decap-cms-oauth.vercel.app'
         },
+        display_url: 'https://x-iran-x.github.io/peykan-khan.github.io/',
         media_folder: 'images',
         public_folder: '/images',
         collections: [
           {
-            name: 'content',
-            label: 'مدیریت محتوا',
+            name: 'posts_collection',
+            label: 'مدیریت پست‌ها',
             files: [
               {
-                name: 'posts_list',
-                label: 'لیست پست‌ها',
+                name: 'posts_data',
+                label: 'تمام پست‌های سایت',
                 file: 'posts.json',
-                format: 'json',
                 fields: [
                   {
+                    label: 'لیست پست‌ها',
                     name: 'posts',
-                    label: 'پست‌ها',
                     widget: 'list',
-                    fields: [
-                      { label: 'شناسه (ID)', name: 'id', widget: 'number', value_type: 'int' },
-                      { label: 'عنوان', name: 'title', widget: 'string' },
-                      { label: 'نوع (book/cinema/mod)', name: 'type', widget: 'string' },
-                      { label: 'دسته‌بندی', name: 'category', widget: 'string' },
-                      { label: 'تاریخ', name: 'date', widget: 'string' },
-                      { label: 'توضیحات کوتاه', name: 'description', widget: 'text' },
-                      { label: 'محتوا (HTML)', name: 'content', widget: 'text' }
-                    ]
+                    summary: '{{fields.title}} (شناسه: {{fields.id}})',
+                    field: {
+                      label: 'پست',
+                      name: 'post_item',
+                      widget: 'object',
+                      fields: [
+                        { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int', default: 1 },
+                        { label: 'عنوان', name: 'title', widget: 'string' },
+                        { label: 'نوع (book/cinema/mod)', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod', 'article'], default: 'book' },
+                        { label: 'دسته‌بندی (انگلیسی کوچک)', name: 'category', widget: 'string', default: 'story' },
+                        { label: 'تاریخ', name: 'date', widget: 'string' },
+                        { label: 'توضیحات کوتاه', name: 'description', widget: 'text' },
+                        { label: 'محتوا (HTML)', name: 'content', widget: 'text' }
+                      ]
+                    }
                   }
                 ]
               }
