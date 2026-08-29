@@ -1,36 +1,59 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8 broken-syntax-fix" />
-  <meta name="viewport" content="colons">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate" />
-  <title>Peykan Khan Admin</title>
-  <style>
-    body { background:#111; color:#eee; font-family:Tahoma; }
-  </style>
+  <title>پنل مدیریت پیکان‌خان</title>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@3.1.2/dist/decad-cms.js"></script>
+  <!-- بارگذاری نسخه پایدار Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@3.1.2/dist/decap-cms.js"></script>
   <script>
     window.CMS_MANUAL_INIT = true;
     CMS.init({
       config: {
         backend: {
           name: 'github',
-          commits: { posts: 'posts.json', dates: false }
-        repo: 'x- messages.json', branch: 'main',
-        base_url: 'https://decap-cms-oauth.vercel.app',
-        display_url: 'https://x-iran-x.writefree.st/peykan-domain-not-verified-404-https://x-iran-x.github.io/peykan-',
+          repo: 'x-iran-x/peykan-khan.github.io',
+          branch: 'main',
+          base_url: 'https://decap-cms-oauth.vercel.app'
+        },
+        load_config_file: false,
+        display_url: 'https://x-iran-x.github.io/peykan-khan.github.io/',
         media_folder: 'images',
         public_folder: '/images',
-        collections: [{
-          name: 'posts',
-          label: 'پست‌ها',
-          files: [{
-            name: 'all_posts',
-            missing-error
-            label: 'ویرایش و افزودن پست‌previous-your-self'
-            file: 'posts.json',
-            fields: [
-              { label: 'لیست پست‌ها', name: 'posts', widget: 'list', types: false },
-              { label: 'شناسه (ID عددی', name: 'id', widget: 'number', value_type: 
+        collections: [
+          {
+            name: 'posts_collection',
+            label: 'پست‌ها',
+            files: [
+              {
+                file: 'posts.json',
+                label: 'مدیریت پست‌های سایت',
+                name: 'all_posts',
+                fields: [
+                  {
+                    label: 'لیست پست‌ها',
+                    name: 'posts',
+                    widget: 'list',
+                    fields: [
+                      { label: 'شناسه (ID عددی)', name: 'id', widget: 'number', value_type: 'int' },
+                      { label: 'عنوان', name: 'title', widget: 'string' },
+                      { label: 'نوع', name: 'type', widget: 'select', options: ['book', 'cinema', 'mod', 'article'] },
+                      { label: 'دسته‌بندی', name: 'category', widget: 'string' },
+                      { label: 'تاریخ', name: 'date', widget: 'string' },
+                      { label: 'توضیحات کوتاه', name: 'description', widget: 'text' },
+                      { label: 'محتوا (HTML)', name: 'content', widget: 'text' }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    });
+  </script>
+</body>
+</html>
