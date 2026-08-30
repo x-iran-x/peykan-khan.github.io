@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت پیکان‌خان 🚗💨</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="panel-container">
+    <header class="panel-header">
+      <h1>پنل مدیریت پیکان‌خان</h1>
+      <p>مدیریت و انتشار پست‌های جدید سایت</p>
+    </header>
+
+    <form id="postForm" class="post-form">
+      <!-- انتخاب نوع پست -->
+      <div class="form-group">
+        <label for="postType">نوع پست:</label>
+        <select id="postType" required>
+          <option value="book">📚 کتاب</option>
+          <option value="movie">🎬 فیلم</option>
+          <option value="mod">🎮 مود بازی</option>
+          <option value="article">📝 مقاله</option>
+        </select>
+      </div>
+
+      <!-- فیلدهای عمومی -->
+      <div class="form-group">
+        <label for="title">عنوان پست (فارسی):</label>
+        <input type="text" id="title" placeholder="مثال: کتاب داس و کلید" required>
+      </div>
+
+      <div class="form-group">
+        <label for="date">تاریخ انتشار (شمسی):</label>
+        <input type="text" id="date" placeholder="مثال: ۱۱ شهریور ۱۴۰۵" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">توضیحات کوتاه (Description):</label>
+        <textarea id="description" rows="3" placeholder="خلاصه‌ای کوتاه برای کارت پست..." required></textarea>
+      </div>
+
+      <!-- فیلدهای اختصاصی کتاب -->
+      <div id="bookFields" class="type-fields">
+        <div class="form-group">
+          <label for="bookAuthor">نویسنده:</label>
+          <input type="text" id="bookAuthor" placeholder="مثال: استوارت گیبز">
+        </div>
+        <div class="form-group">
+          <label for="bookTranslator">مترجم:</label>
+          <input type="text" id="bookTranslator" placeholder="مثال: تیم ترجمه پیکان‌خان">
+        </div>
+        <div class="form-group">
+          <label for="bookPassword">رمز فایل:</label>
+          <input type="text" id="bookPassword" placeholder="مثال: peykan-khan.ir">
+        </div>
+        <div class="form-group">
+          <label for="bookDriveLink">لینک فایل در Google Drive:</label>
+          <input type="url" id="bookDriveLink" placeholder="https://drive.google.com/file/d/...">
+        </div>
+        <div class="form-group">
+          <label for="bookAbout">درباره کتاب:</label>
+          <textarea id="bookAbout" rows="3" placeholder="توضیحات و خلاصه داستان کتاب..."></textarea>
+        </div>
+      </div>
+
+      <!-- فیلدهای اختصاصی فیلم -->
+      <div id="movieFields" class="type-fields" style="display: none;">
+        <div class="form-group">
+          <label for="movieDirector">کارگردان:</label>
+          <input type="text" id="movieDirector" placeholder="مثال: کریستوفر نولان">
+        </div>
+        <div class="form-group">
+          <label for="movieYear">سال تولید:</label>
+          <input type="text" id="movieYear" placeholder="مثال: 2024">
+        </div>
+        <div class="form-group">
+          <label for="movieQuality">کیفیت:</label>
+          <input type="text" id="movieQuality" placeholder="مثال: 1080p Web-DL">
+        </div>
+        <div class="form-group">
+          <label for="movieAge">رده سنی:</label>
+          <input type="text" id="movieAge" placeholder="مثال: +13 یا +18">
+        </div>
+        <div class="form-group">
+          <label for="movieEmbed">کد امبد (نمایش آنلاین / تریلر):</label>
+          <textarea id="movieEmbed" rows="2" placeholder="<iframe>...</iframe>"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="movieDownloadLink">لینک مستقیم / دانلود:</label>
+          <input type="url" id="movieDownloadLink" placeholder="لینک دانلود فیلم...">
+        </div>
+      </div>
+
+      <!-- فیلدهای اختصاصی مود -->
+      <div id="modFields" class="type-fields" style="display: none;">
+        <div class="form-group">
+          <label for="modGame">نام بازی:</label>
+          <input type="text" id="modGame" placeholder="مثال: GTA V">
+        </div>
+        <div class="form-group">
+          <label for="modVersion">نسخه بازی / سازگار با:</label>
+          <input type="text" id="modVersion" placeholder="مثال: v1.0.2802">
+        </div>
+        <div class="form-group">
+          <label for="modSize">حجم فایل:</label>
+          <input type="text" id="modSize" placeholder="مثال: 150 MB">
+        </div>
+        <div class="form-group">
+          <label for="modDriveLink">لینک مود در Google Drive:</label>
+          <input type="url" id="modDriveLink" placeholder="https://drive.google.com/file/d/...">
+        </div>
+        <div class="form-group">
+          <label for="modNotes">نکات مهم و راهنمای نصب:</label>
+          <textarea id="modNotes" rows="3" placeholder="فایل‌ها را در مسیر OpenIV جایگزین کنید..."></textarea>
+        </div>
+      </div>
+
+      <!-- فیلدهای اختصاصی مقاله -->
+      <div id="articleFields" class="type-fields" style="display: none;">
+        <div class="form-group">
+          <label for="articleAuthor">نویسنده مقاله:</label>
+          <input type="text" id="articleAuthor" placeholder="مثال: پیکان‌خان">
+        </div>
+        <div class="form-group">
+          <label for="articleReadTime">زمان تقریبی مطالعه:</label>
+          <input type="text" id="articleReadTime" placeholder="مثال: ۵ دقیقه">
+        </div>
+        <div class="form-group">
+          <label for="articleTags">برچسب‌ها (با کاما جدا کنید):</label>
+          <input type="text" id="articleTags" placeholder="گیمینگ, آموزش, امنیت">
+        </div>
+        <div class="form-group">
+          <label for="articleHtmlContent">محتوای مقاله (HTML):</label>
+          <textarea id="articleHtmlContent" rows="6" placeholder="<p>متن بند اول...</p>"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn-submit">🚀 انتشار پست در سایت</button>
+      <div id="statusMessage" class="status-box"></div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
