@@ -1,23 +1,38 @@
 // /api/update-post.js
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ message: 'فقط متد POST مجازه دادا!' });
+  // ۱. چک کردن اینکه حتماً متد POST باشه
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'دادا! این یه API هست، فقط با متد POST کار می‌کنه.' });
+  }
 
-  const { postData, filePath } = req.body; // postData همون دیتای جدیدته
+  const { postData, filePath } = req.body; 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const GITHUB_REPO = "peykan-khan/peykan-khan.github.io"; // اسم ریپو خودت رو اینجا بزن
+  
+  // ۲. اینجا اسم دقیق ریپازیتوری خودت رو گذاشتم
+  const GITHUB_REPO = "peykan-khan/peykan-khan.github.io"; 
+
+  if (!GITHUB_TOKEN) {
+    return res.status(500).json({ error: 'توکن گیت‌هاب پیدا نشد! برو Vercel چک کن دادا.' });
+  }
 
   try {
-    // ۱. گرفتن محتوای فعلی فایل از گیت‌هاب
+    // ۳. گرفتن محتوای فعلی فایل از گیت‌هاب
     const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`, {
       headers: { Authorization: `token ${GITHUB_TOKEN}` }
     });
+
+    if (!response.ok) {
+      throw new Error(`خطا در پیدا کردن فایل: ${response.statusText}`);
+    }
+
     const fileData = await response.json();
+    // تبدیل محتوای base64 به متن قابل فهم
     const currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
 
-    // ۲. اضافه کردن پست جدید به آرایه پست‌ها
+    // ۴. اضافه کردن پست جدید به آرایه پست‌ها
     currentContent.push(postData);
 
-    // ۳. آپدیت کردن فایل در گیت‌هاب
+    // ۵. آپدیت کردن فایل در گیت‌هاب با استفاده از SHA (برای اینکه گیت‌هاب قبول کنه)
     await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`, {
       method: 'PUT',
       headers: { 
@@ -25,14 +40,15 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: 'Add new post from panel',
+        message: 'Peykan Khan Panel: Add new post',
         content: Buffer.from(JSON.stringify(currentContent, null, 2)).toString('base64'),
-        sha: fileData.sha
+        sha: fileData.sha // این خیلی مهمه، وگرنه گیت‌هاب اجازه آپدیت نمی‌ده
       })
     });
 
-    res.status(200).json({ message: 'دمت گرم! پست با موفقیت ثبت شد.' });
+    res.status(200).json({ message: 'ایول! پست با موفقیت توی گیت‌هاب ثبت شد.' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 }
