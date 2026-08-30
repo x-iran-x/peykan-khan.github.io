@@ -9,6 +9,7 @@ document.getElementById('postType').addEventListener('change', function() {
 
 // ۲. تابع تبدیل لینک گوگل‌درایو به لینک دانلود مستقیم
 function getDirectDriveLink(url) {
+  if (!url) return '';
   const match = url.match(/\/d\/(.+?)\//);
   if (match && match[1]) {
     return `https://drive.google.com/uc?export=download&id=${match[1]}`;
@@ -38,27 +39,27 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
   };
 
   // اضافه کردن فیلدهای اختصاصی
-  if (type === 'book') {
-    postData.author = document.getElementById('bookAuthor').value;
-    postData.translator = document.getElementById('bookTranslator').value;
-    postData.password = document.getElementById('bookPassword').value;
-    const directLink = getDirectDriveLink(document.getElementById('bookDriveLink').value);
-    postData.content = `<p>درباره کتاب: ${document.getElementById('bookAbout').value}</p><p>مشخصات: نویسنده ${postData.author} - مترجم ${postData.translator}</p><p>رمز فایل: ${postData.password}</p><a href="${directLink}" class="download-btn">دانلود مستقیم کتاب</a>`;
-  } else if (type === 'movie') {
-    postData.director = document.getElementById('movieDirector').value;
-    postData.year = document.getElementById('movieYear').value;
-    postData.quality = document.getElementById('movieQuality').value;
-    postData.content = `<p>کارگردان: ${postData.director}</p><p>سال: ${postData.year}</p><p>کیفیت: ${postData.quality}</p>${document.getElementById('movieEmbed').value}<br><a href="${document.getElementById('movieDownloadLink').value}" class="download-btn">دانلود فیلم</a>`;
-  } else if (type === 'mod') {
-    postData.game = document.getElementById('modGame').value;
-    const directLink = getDirectDriveLink(document.getElementById('modDriveLink').value);
-    postData.content = `<p>بازی: ${postData.game}</p><p>نکات: ${document.getElementById('modNotes').value}</p><a href="${directLink}" class="download-btn">دانلود مود</a>`;
-  } else if (type === 'article') {
-    postData.content = document.getElementById('articleHtmlContent').value;
-  }
-
-  // فرستادن به API
   try {
+    if (type === 'book') {
+      postData.author = document.getElementById('bookAuthor').value;
+      postData.translator = document.getElementById('bookTranslator').value;
+      postData.password = document.getElementById('bookPassword').value;
+      const directLink = getDirectDriveLink(document.getElementById('bookDriveLink').value);
+      postData.content = `<p>درباره کتاب: ${document.getElementById('bookAbout').value}</p><p>مشخصات: نویسنده ${postData.author} - مترجم ${postData.translator}</p><p>رمز فایل: ${postData.password}</p><a href="${directLink}" class="download-btn">دانلود مستقیم کتاب</a>`;
+    } else if (type === 'movie') {
+      postData.director = document.getElementById('movieDirector').value;
+      postData.year = document.getElementById('movieYear').value;
+      postData.quality = document.getElementById('movieQuality').value;
+      postData.content = `<p>کارگردان: ${postData.director}</p><p>سال: ${postData.year}</p><p>کیفیت: ${postData.quality}</p>${document.getElementById('movieEmbed').value}<br><a href="${document.getElementById('movieDownloadLink').value}" class="download-btn">دانلود فیلم</a>`;
+    } else if (type === 'mod') {
+      postData.game = document.getElementById('modGame').value;
+      const directLink = getDirectDriveLink(document.getElementById('modDriveLink').value);
+      postData.content = `<p>بازی: ${postData.game}</p><p>نکات: ${document.getElementById('modNotes').value}</p><a href="${directLink}" class="download-btn">دانلود مود</a>`;
+    } else if (type === 'article') {
+      postData.content = document.getElementById('articleHtmlContent').value;
+    }
+
+    // فرستادن به API
     const response = await fetch('/api/update-post', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -70,10 +71,14 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
       statusMessage.className = 'status-box success';
       document.getElementById('postForm').reset();
     } else {
-      throw new Error('خطا در ثبت پست!');
+      // اینجا همون جادویی هست که ارور واقعی رو میاره
+      const errorText = await response.text();
+      statusMessage.textContent = `خطای سرور (${response.status}): ${errorText}`;
+      statusMessage.className = 'status-box error';
     }
   } catch (error) {
-    statusMessage.textContent = 'یه مشکلی پیش اومد دادا: ' + error.message;
+    // اگر کلاً ارتباط برقرار نشد (مثلاً اینترنت یا آدرس اشتباه)
+    statusMessage.textContent = 'خطای سیستمی: ' + error.message;
     statusMessage.className = 'status-box error';
   } finally {
     submitBtn.disabled = false;
