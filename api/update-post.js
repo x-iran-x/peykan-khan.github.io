@@ -1,46 +1,53 @@
 export default async function handler(req, res) {
-  // ۱. تنظیمات دسترسی برای اینکه مرورگر اجازه بده از گیت‌هاب به ورسل درخواست بفرستی
+  // ۱. تنظیمات دسترسی (CORS)
   res.setHeader('Access-Control-Allow-Origin', '*'); 
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // ۲. جواب دادن به درخواستِ "پیش‌پرواز" (OPTIONS)
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // ۳. حالا چک کردن اینکه حتماً متد POST باشه
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'دادا! این یه API هست، فقط با متد POST کار می‌کنه.' });
+    return res.status(405).json({ message: 'فقط متد POST قبوله دادا!' });
   }
 
   const { postData, filePath } = req.body; 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const GITHUB_REPO = "peykan-khan/peykan-khan.github.io"; 
+  
+  // این همون آدرسِ صحیح ریپازیتوریِ تو که توی عکس دیدم:
+  const GITHUB_REPO = "x-iran-x/peykan-khan.github.io"; 
 
   if (!GITHUB_TOKEN) {
     return res.status(500).json({ error: 'توکن گیت‌هاب پیدا نشد!' });
   }
 
   try {
+    // گرفتنِ محتوای فعلی فایل
     const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`, {
-      headers: { Authorization: `token ${GITHUB_TOKEN}` }
+      headers: { 
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
     });
 
     if (!response.ok) {
-      throw new Error(`خطا در پیدا کردن فایل: ${response.statusText}`);
+      throw new Error(`خطا در پیدا کردن فایل: ${response.statusText} (مطمئن شو مسیرِ فایل درسته)`);
     }
 
     const fileData = await response.json();
     const currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
 
+    // اضافه کردن پست جدید
     currentContent.push(postData);
 
+    // آپدیت کردن فایل
     await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`, {
       method: 'PUT',
       headers: { 
-        Authorization: `token ${GITHUB_TOKEN}`,
-        'Content-Type': 'application/json'
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json'
       },
       body: JSON.stringify({
         message: 'Peykan Khan Panel: Add new post',
