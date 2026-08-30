@@ -14,7 +14,7 @@ function getDirectDriveLink(url) {
   if (match && match[1]) {
     return `https://drive.google.com/uc?export=download&id=${match[1]}`;
   }
-  return url; // اگه لینک استاندارد نبود، خودش رو برگردون
+  return url;
 }
 
 // ۳. ارسال اطلاعات به API
@@ -31,14 +31,13 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
 
   // ساخت آبجکت پست بر اساس فیلدها
   let postData = {
-    id: Date.now(), // آیدی عددی بر اساس زمان
+    id: Date.now(),
     title: document.getElementById('title').value,
     type: type,
     date: document.getElementById('date').value,
     description: document.getElementById('description').value
   };
 
-  // اضافه کردن فیلدهای اختصاصی
   try {
     if (type === 'book') {
       postData.author = document.getElementById('bookAuthor').value;
@@ -54,13 +53,13 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
     } else if (type === 'mod') {
       postData.game = document.getElementById('modGame').value;
       const directLink = getDirectDriveLink(document.getElementById('modDriveLink').value);
-      postData.content = `<p>بازی: ${postData.game}</p><p>نکات: ${document.getElementById('modNotes').value}</p><a href="${directLink}" class="download-btn">دانلود مود</a>`;
+      postData.content = `<p>بازی: ${postData.game}</p><p>نکات: ${postData.modNotes.value}</p><a href="${directLink}" class="download-btn">دانلود مود</a>`;
     } else if (type === 'article') {
       postData.content = document.getElementById('articleHtmlContent').value;
     }
 
-    // فرستادن به API
-    const response = await fetch('/api/update-post', {
+    // فرستادن به API (آدرس کامل ورسل رو اینجا گذاشتم)
+    const response = await fetch('https://peykan-khan-github-io.vercel.app/api/update-post', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ postData, filePath: 'posts.json' })
@@ -71,13 +70,11 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
       statusMessage.className = 'status-box success';
       document.getElementById('postForm').reset();
     } else {
-      // اینجا همون جادویی هست که ارور واقعی رو میاره
       const errorText = await response.text();
       statusMessage.textContent = `خطای سرور (${response.status}): ${errorText}`;
       statusMessage.className = 'status-box error';
     }
   } catch (error) {
-    // اگر کلاً ارتباط برقرار نشد (مثلاً اینترنت یا آدرس اشتباه)
     statusMessage.textContent = 'خطای سیستمی: ' + error.message;
     statusMessage.className = 'status-box error';
   } finally {
