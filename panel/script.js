@@ -4,13 +4,14 @@
 document.getElementById('postType').addEventListener('change', function() {
   const type = this.value;
   document.querySelectorAll('.type-fields').forEach(div => div.style.display = 'none');
-  document.getElementById(type + 'Fields').style.display = 'block';
+  const targetField = document.getElementById(type + 'Fields');
+  if (targetField) targetField.style.display = 'block';
 });
 
 // ۲. تابع تبدیل لینک گوگل‌درایو به لینک دانلود مستقیم
 function getDirectDriveLink(url) {
   if (!url) return '';
-  const match = url.match(/\/d\/(.+?)\//);
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
   if (match && match[1]) {
     return `https://drive.google.com/uc?export=download&id=${match[1]}`;
   }
@@ -26,10 +27,10 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
   const type = document.getElementById('postType').value;
   
   submitBtn.disabled = true;
-  statusMessage.textContent = 'در حال ثبت پست... لطفا صبر کن دادا!';
+  statusMessage.textContent = 'در حال ثبت پست... لطفاً صبر کن دادا!';
   statusMessage.className = 'status-box';
 
-  // ساخت آبجکت پست بر اساس فیلدها
+  // ساخت آبجکت پایه پست
   let postData = {
     id: Date.now(),
     title: document.getElementById('title').value,
@@ -40,25 +41,34 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
 
   try {
     if (type === 'book') {
-      postData.author = document.getElementById('bookAuthor').value;
-      postData.translator = document.getElementById('bookTranslator').value;
-      postData.password = document.getElementById('bookPassword').value;
+      postData.category = "story";
+      const author = document.getElementById('bookAuthor').value;
+      const translator = document.getElementById('bookTranslator').value;
+      const password = document.getElementById('bookPassword').value;
+      const about = document.getElementById('bookAbout') ? document.getElementById('bookAbout').value : '';
       const directLink = getDirectDriveLink(document.getElementById('bookDriveLink').value);
-      postData.content = `<p>درباره کتاب: ${document.getElementById('bookAbout').value}</p><p>مشخصات: نویسنده ${postData.author} - مترجم ${postData.translator}</p><p>رمز فایل: ${postData.password}</p><a href="${directLink}" class="download-btn">دانلود مستقیم کتاب</a>`;
+      
+      // ساختاربندی HTML دقیقاً مطابق ساختار اختصاصی کتاب‌ها
+      postData.content = `<p>درباره کتاب: ${about}</p><p>مشخصات: نویسنده ${author} - مترجم ${translator}</p><p>رمز فایل: ${password}</p><a href="${directLink}" class="download-btn">دانلود مستقیم کتاب</a>`;
     } else if (type === 'movie') {
-      postData.director = document.getElementById('movieDirector').value;
-      postData.year = document.getElementById('movieYear').value;
-      postData.quality = document.getElementById('movieQuality').value;
-      postData.content = `<p>کارگردان: ${postData.director}</p><p>سال: ${postData.year}</p><p>کیفیت: ${postData.quality}</p>${document.getElementById('movieEmbed').value}<br><a href="${document.getElementById('movieDownloadLink').value}" class="download-btn">دانلود فیلم</a>`;
+      const director = document.getElementById('movieDirector').value;
+      const year = document.getElementById('movieYear').value;
+      const quality = document.getElementById('movieQuality').value;
+      const embed = document.getElementById('movieEmbed') ? document.getElementById('movieEmbed').value : '';
+      const downloadLink = document.getElementById('movieDownloadLink') ? document.getElementById('movieDownloadLink').value : '';
+      
+      postData.content = `<p>کارگردان: ${director}</p><p>سال: ${year}</p><p>کیفیت: ${quality}</p>${embed}<br><a href="${downloadLink}" class="download-btn">دانلود فیلم</a>`;
     } else if (type === 'mod') {
-      postData.game = document.getElementById('modGame').value;
+      const game = document.getElementById('modGame').value;
+      const notes = document.getElementById('modNotes') ? document.getElementById('modNotes').value : '';
       const directLink = getDirectDriveLink(document.getElementById('modDriveLink').value);
-      postData.content = `<p>بازی: ${postData.game}</p><p>نکات: ${postData.modNotes.value}</p><a href="${directLink}" class="download-btn">دانلود مود</a>`;
+      
+      postData.content = `<p>بازی: ${game}</p><p>نکات: ${notes}</p><a href="${directLink}" class="download-btn">دانلود مود</a>`;
     } else if (type === 'article') {
       postData.content = document.getElementById('articleHtmlContent').value;
     }
 
-    // فرستادن به API (آدرس کامل ورسل رو اینجا گذاشتم)
+    // ارسال به API ورسل
     const response = await fetch('https://peykan-khan-github-io.vercel.app/api/update-post', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,12 +76,13 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
     });
 
     if (response.ok) {
-      statusMessage.textContent = 'دمت گرم! پست با موفقیت ثبت شد.';
+      statusMessage.textContent = 'دمت گرم دادا! پست با موفقیت ثبت و ذخیره شد.';
       statusMessage.className = 'status-box success';
       document.getElementById('postForm').reset();
     } else {
-      const errorText = await response.text();
-      statusMessage.textContent = `خطای سرور (${response.status}): ${errorText}`;
+      const errorData = await response.json().catch(() => ({}));
+      const errorMsg = errorData.error || errorData.message || (await response.text());
+      statusMessage.textContent = `خطای سرور (${response.status}): ${errorMsg}`;
       statusMessage.className = 'status-box error';
     }
   } catch (error) {
