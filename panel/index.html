@@ -7,6 +7,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- بخش صفحه ورود -->
+<div id="loginOverlay" class="login-container">
+  <div class="login-box">
+    <h2>🔐 ورود به اتاق فرمان پیکان‌خان</h2>
+    <p>برای دسترسی به پنل مدیریت، رمز عبور را وارد کنید:</p>
+    <div class="input-group">
+      <input type="password" id="adminPassword" placeholder="رمز عبور...">
+    </div>
+    <button id="loginBtn" class="btn-primary">🔓 ورود به پنل</button>
+    <div id="loginError" class="error-text" style="display:none;">❌ رمز عبور اشتباه است!</div>
+  </div>
+</div>
   <div class="panel-container">
     <header class="panel-header">
       <h1>پنل مدیریت پیکان‌خان</h1>
