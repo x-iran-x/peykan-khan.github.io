@@ -345,6 +345,9 @@ function openPost(postId) {
         </div>
     `;
 
+    // فراخوانی سیستم تعاملی
+    renderInteractions(singlePost, postId);
+
     showPage("postPage");
 }
 
@@ -692,7 +695,6 @@ function loadPosts() {
             return response.json();
         })
         .then(function (data) {
-            // این خط الان هر دو حالت (هم CMS و هم آرایه مستقیم) رو می‌شناسه:
             posts = Array.isArray(data) ? data : (data.posts || []);
 
             preparePosts();
@@ -741,6 +743,7 @@ if (document.readyState === "loading") {
     init();
     loadPosts();
 }
+
 // --- سیستم لایک و نظرات Upstash (پیکان‌خان) ---
 const INTERACTIONS_API = 'https://peykan-khan.vercel.app/api/interactions';
 
