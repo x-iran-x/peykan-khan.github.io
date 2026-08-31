@@ -1072,3 +1072,149 @@ body.light-theme .search-box input {
     background: #ffffff;
     color: #222222;
     }
+/* --- سیستم لایک و کامنت اختصاصی پیکان‌خان --- */
+.interaction-section {
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  font-family: inherit;
+}
+
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.like-btn {
+  background: rgba(255, 75, 75, 0.1);
+  border: 1px solid rgba(255, 75, 75, 0.4);
+  color: #ff4b4b;
+  padding: 8px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: all 0.25s ease;
+}
+
+.like-btn:hover {
+  background: #ff4b4b;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 75, 75, 0.4);
+}
+
+.like-btn.liked {
+  background: #ff4b4b;
+  color: #fff;
+}
+
+.comments-section h3 {
+  color: #f1f5f9;
+  font-size: 1.15rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus {
+  border-color: #38bdf8;
+}
+
+.comment-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.comment-submit-btn {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.comment-submit-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+.comment-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+}
+
+.no-comments {
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+}
