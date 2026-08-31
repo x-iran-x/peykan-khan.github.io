@@ -44,6 +44,14 @@
       <!-- فیلدهای اختصاصی کتاب -->
       <div id="bookFields" class="type-fields">
         <div class="form-group">
+          <label for="bookCategory">دسته‌بندی کتاب:</label>
+          <select id="bookCategory">
+            <option value="story">کتاب داستان (story)</option>
+            <option value="history">کتاب تاریخی (history)</option>
+            <option value="children">کتاب کودک (children)</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="bookAuthor">نویسنده:</label>
           <input type="text" id="bookAuthor" placeholder="مثال: استوارت گیبز">
         </div>
@@ -67,6 +75,14 @@
 
       <!-- فیلدهای اختصاصی فیلم -->
       <div id="movieFields" class="type-fields" style="display: none;">
+        <div class="form-group">
+          <label for="movieCategory">دسته‌بندی فیلم و سریال:</label>
+          <select id="movieCategory">
+            <option value="cinema">فیلم سینمایی (cinema)</option>
+            <option value="education">فیلم آموزشی (education)</option>
+            <option value="short-series">سریال کوتاه (short-series)</option>
+          </select>
+        </div>
         <div class="form-group">
           <label for="movieDirector">کارگردان:</label>
           <input type="text" id="movieDirector" placeholder="مثال: کریستوفر نولان">
@@ -96,6 +112,13 @@
       <!-- فیلدهای اختصاصی مود -->
       <div id="modFields" class="type-fields" style="display: none;">
         <div class="form-group">
+          <label for="modCategory">دسته‌بندی مود:</label>
+          <select id="modCategory">
+            <option value="gta-v">مود GTA V (gta-v)</option>
+            <option value="bomb-squad">مود Bomb Squad (bomb-squad)</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="modGame">نام بازی:</label>
           <input type="text" id="modGame" placeholder="مثال: GTA V">
         </div>
@@ -119,6 +142,13 @@
 
       <!-- فیلدهای اختصاصی مقاله -->
       <div id="articleFields" class="type-fields" style="display: none;">
+        <div class="form-group">
+          <label for="articleCategory">دسته‌بندی مقاله:</label>
+          <select id="articleCategory">
+            <option value="tutorial">مقاله آموزشی (tutorial)</option>
+            <option value="other">مطلب متفرقه (other)</option>
+          </select>
+        </div>
         <div class="form-group">
           <label for="articleAuthor">نویسنده مقاله:</label>
           <input type="text" id="articleAuthor" placeholder="مثال: پیکان‌خان">
