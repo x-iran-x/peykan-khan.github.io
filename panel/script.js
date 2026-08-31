@@ -26,29 +26,42 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
   const statusMessage = document.getElementById('statusMessage');
   const type = document.getElementById('postType').value;
   
+  // استخراج دسته‌بندی بر اساس نوع انتخابی
+  let selectedCategory = '';
+  const categoryElem = document.getElementById(`${type}Category`);
+  if (categoryElem) {
+    selectedCategory = categoryElem.value;
+  }
+
+  // اگر دسته‌بندی انتخاب نشده بود، اجازه ثبت نمیده!
+  if (!selectedCategory) {
+    statusMessage.textContent = 'دادا لطفاً اول دسته‌بندی پست رو مشخص کن!';
+    statusMessage.className = 'status-box error';
+    return;
+  }
+
   submitBtn.disabled = true;
   statusMessage.textContent = 'در حال ثبت پست... لطفاً صبر کن دادا!';
   statusMessage.className = 'status-box';
 
-  // ساخت آبجکت پایه پست
+  // ساخت آبجکت پایه پست با رعایت فیلد category
   let postData = {
     id: Date.now(),
     title: document.getElementById('title').value,
     type: type,
+    category: selectedCategory,
     date: document.getElementById('date').value,
     description: document.getElementById('description').value
   };
 
   try {
     if (type === 'book') {
-      postData.category = "story";
       const author = document.getElementById('bookAuthor').value;
       const translator = document.getElementById('bookTranslator').value;
       const password = document.getElementById('bookPassword').value;
       const about = document.getElementById('bookAbout') ? document.getElementById('bookAbout').value : '';
       const directLink = getDirectDriveLink(document.getElementById('bookDriveLink').value);
       
-      // ساختاربندی HTML دقیقاً مطابق ساختار اختصاصی کتاب‌ها
       postData.content = `<p>درباره کتاب: ${about}</p><p>مشخصات: نویسنده ${author} - مترجم ${translator}</p><p>رمز فایل: ${password}</p><a href="${directLink}" class="download-btn">دانلود مستقیم کتاب</a>`;
     } else if (type === 'movie') {
       const director = document.getElementById('movieDirector').value;
@@ -76,9 +89,11 @@ document.getElementById('postForm').addEventListener('submit', async function(e)
     });
 
     if (response.ok) {
-      statusMessage.textContent = 'دمت گرم دادا! پست با موفقیت ثبت و ذخیره شد.';
+      statusMessage.textContent = 'دمت گرم دادا! پست با دسته‌بندی معتبر با موفقیت ثبت شد.';
       statusMessage.className = 'status-box success';
       document.getElementById('postForm').reset();
+      // برگرداندن نمایش فرم به حالت اولیه
+      document.querySelectorAll('.type-fields').forEach(div => div.style.display = 'none');
     } else {
       const errorData = await response.json().catch(() => ({}));
       const errorMsg = errorData.error || errorData.message || (await response.text());
