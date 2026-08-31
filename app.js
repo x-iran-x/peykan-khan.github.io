@@ -741,3 +741,146 @@ if (document.readyState === "loading") {
     init();
     loadPosts();
 }
+// --- سیستم لایک و نظرات Upstash (پیکان‌خان) ---
+const INTERACTIONS_API = 'https://peykan-khan.vercel.app/api/interactions';
+
+async function renderInteractions(containerElement, postId) {
+  if (!containerElement) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'interaction-section';
+  wrapper.innerHTML = `
+    <div class="like-container">
+      <button class="like-btn" id="like-btn-${postId}">
+        ❤️ <span id="like-text-${postId}">پسندیدم</span> (<span id="like-count-${postId}">0</span>)
+      </button>
+    </div>
+    
+    <div class="comments-section">
+      <h3>💬 نظرات و بازخوردها</h3>
+      
+      <form class="comment-form" id="comment-form-${postId}">
+        <input type="text" id="author-${postId}" placeholder="نام شما (اختیاری)" maxlength="40" />
+        <textarea id="text-${postId}" placeholder="نظر یا سوالت رو اینجا بنویس دادا..." required maxlength="500"></textarea>
+        <button type="submit" class="comment-submit-btn">ارسال نظر 🚀</button>
+      </form>
+
+      <div class="comments-list" id="comments-list-${postId}">
+        <div class="no-comments">در حال بارگذاری نظرات...</div>
+      </div>
+    </div>
+  `;
+
+  containerElement.appendChild(wrapper);
+
+  const likeBtn = wrapper.querySelector(`#like-btn-${postId}`);
+  const likeCountSpan = wrapper.querySelector(`#like-count-${postId}`);
+  const commentForm = wrapper.querySelector(`#comment-form-${postId}`);
+  const commentsList = wrapper.querySelector(`#comments-list-${postId}`);
+
+  const hasLiked = localStorage.getItem(`liked_${postId}`);
+  if (hasLiked) {
+    likeBtn.classList.add('liked');
+  }
+
+  // ۱. دریافت آمار لایک و کامنت
+  try {
+    const res = await fetch(`${INTERACTIONS_API}?postId=${postId}`);
+    if (res.ok) {
+      const data = await res.json();
+      likeCountSpan.textContent = data.likes || 0;
+      renderCommentsList(commentsList, data.comments || []);
+    } else {
+      commentsList.innerHTML = '<div class="no-comments">هنوز نظری ثبت نشده؛ اولین نفری باش که نظر میدی! ✍️</div>';
+    }
+  } catch (err) {
+    console.error('خطا در بارگذاری نظرات:', err);
+    commentsList.innerHTML = '<div class="no-comments">هنوز نظری ثبت نشده؛ اولین نفری باش که نظر میدی! ✍️</div>';
+  }
+
+  // ۲. دکمه لایک
+  likeBtn.addEventListener('click', async () => {
+    if (likeBtn.classList.contains('liked')) return;
+    likeBtn.classList.add('liked');
+    
+    try {
+      const res = await fetch(INTERACTIONS_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'like', postId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        likeCountSpan.textContent = data.likes;
+        localStorage.setItem(`liked_${postId}`, 'true');
+      }
+    } catch (e) {
+      console.error('خطای لایک:', e);
+    }
+  });
+
+  // ۳. ارسال کامنت
+  commentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const authorInput = wrapper.querySelector(`#author-${postId}`);
+    const textInput = wrapper.querySelector(`#text-${postId}`);
+    const submitBtn = wrapper.querySelector('.comment-submit-btn');
+
+    const author = authorInput.value.trim() || 'کاربر ناشناس';
+    const text = textInput.value.trim();
+
+    if (!text) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'در حال ارسال...';
+
+    try {
+      const res = await fetch(INTERACTIONS_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'comment', postId, author, text })
+      });
+      const data = await res.json();
+      if (data.success) {
+        textInput.value = '';
+        appendSingleComment(commentsList, data.comment);
+      }
+    } catch (e) {
+      alert('خطا در ارسال نظر.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'ارسال نظر 🚀';
+    }
+  });
+}
+
+function renderCommentsList(container, comments) {
+  if (!comments || comments.length === 0) {
+    container.innerHTML = '<div class="no-comments">هنوز نظری ثبت نشده؛ اولین نفری باش که نظر میدی! ✍️</div>';
+    return;
+  }
+  container.innerHTML = '';
+  [...comments].reverse().forEach(c => appendSingleComment(container, c));
+}
+
+function appendSingleComment(container, comment) {
+  const emptyPlaceholder = container.querySelector('.no-comments');
+  if (emptyPlaceholder) emptyPlaceholder.remove();
+
+  const card = document.createElement('div');
+  card.className = 'comment-card';
+  card.innerHTML = `
+    <div class="comment-header">
+      <span class="comment-author">👤 ${escapeHtml(comment.author)}</span>
+      <span class="comment-date">${comment.date || ''}</span>
+    </div>
+    <div class="comment-text">${escapeHtml(comment.text)}</div>
+  `;
+  container.prepend(card);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.innerText = str || '';
+  return div.innerHTML;
+}
