@@ -1,3 +1,38 @@
+// --- سیستم احراز هویت ساده ---
+const SECRET_KEY = "26qp26"; // 🔑 دادا رمز دلخواهت رو اینجا بذار!
+
+const loginOverlay = document.getElementById("loginOverlay");
+const mainPanel = document.getElementById("postForm"); // یا آی‌دی کانتینر اصلی پنل
+const loginBtn = document.getElementById("loginBtn");
+const adminPassword = document.getElementById("adminPassword");
+const loginError = document.getElementById("loginError");
+
+// بررسی اینکه آیا کاربر قبلاً وارد شده یا نه
+if (sessionStorage.getItem("isLoggedIn") === "true") {
+  loginOverlay.style.display = "none";
+  mainPanel.style.display = "block";
+} else {
+  mainPanel.style.display = "none";
+}
+
+function handleLogin() {
+  const enteredPass = adminPassword.value.trim();
+  if (enteredPass === SECRET_KEY) {
+    sessionStorage.setItem("isLoggedIn", "true");
+    loginOverlay.style.display = "none";
+    mainPanel.style.display = "block";
+    loginError.style.display = "none";
+  } else {
+    loginError.style.display = "block";
+    adminPassword.value = "";
+  }
+}
+
+loginBtn.addEventListener("click", handleLogin);
+adminPassword.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") handleLogin();
+});
+// -----------------------------
 // تابع کمکی برای تبدیل لینک مشاهده گوگل درایو به لینک دانلود مستقیم
 function formatDriveDownloadLink(url) {
   if (!url) return "#";
