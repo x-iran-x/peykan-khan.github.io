@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
-  // تنظیم هدرهای CORS برای ارتباط با فرانت‌اند
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // تنظیم هدرهای CORS به صورت صحیح و ایمن
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', 'https://peykan-khan.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -19,7 +19,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'تنظیمات دیتابیس در ورسل کامل نیست!' });
   }
 
-  // تابع کمکی برای اجرای دستورات Redis از طریق REST API
   async function redisCommand(command, ...args) {
     const url = `${UPSTASH_URL}/${command}/${args.map(encodeURIComponent).join('/')}`;
     const response = await fetch(url, {
@@ -40,7 +39,6 @@ export default async function handler(req, res) {
   const commentsKey = `post:${postId}:comments`;
 
   try {
-    // ۱. دریافت اطلاعات لایک و کامنت‌ها (GET)
     if (req.method === 'GET') {
       const likesRes = await redisCommand('get', likesKey);
       const commentsRes = await redisCommand('lrange', commentsKey, '0', '-1');
@@ -51,7 +49,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ likes, comments });
     }
 
-    // ۲. ثبت لایک یا کامنت (POST)
     if (req.method === 'POST') {
       if (action === 'like') {
         const newLikes = await redisCommand('incr', likesKey);
@@ -71,7 +68,6 @@ export default async function handler(req, res) {
           date: new Date().toLocaleDateString('fa-IR'),
         };
 
-        // اضافه کردن کامنت به انتهای لیست در ردیس
         await redisCommand('rpush', commentsKey, JSON.stringify(newComment));
         return res.status(200).json({ success: true, comment: newComment });
       }
