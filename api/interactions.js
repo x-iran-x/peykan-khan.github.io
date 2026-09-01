@@ -1,13 +1,11 @@
 export default async function handler(req, res) {
-  // تنظیم هدرهای CORS برای ارتباط با فرانت‌اند
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  // ۱. تنظیم هدرهای CORS برای اجازه دادن به GitHub Pages
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*'); // اجازه به تمام دامین‌ها (از جمله گیت‌هاب)
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
+  // ۲. پاسخ سریع به درخواست‌های OPTIONS (Preflight request)
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -30,6 +28,7 @@ export default async function handler(req, res) {
     return await response.json();
   }
 
+  // استخراج داده‌ها از Query (برای GET) یا Body (برای POST)
   const { action, postId } = req.method === 'GET' ? req.query : req.body;
 
   if (!postId) {
